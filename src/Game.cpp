@@ -17,7 +17,7 @@ Game::Game(std::string title, int width, int height) {
         instance = this;
     }
 
-    int returned_code = SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_TIMER);
+    int returned_code = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER);
     if (returned_code != 0) {
         throw std::runtime_error("SDL_Init() failed: " + std::string(SDL_GetError()));
     }
@@ -33,8 +33,13 @@ Game::Game(std::string title, int width, int height) {
     }
 
     returned_code = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024);
-    if (returned_code == -1) {
+    if (returned_code != 0) {
         throw std::runtime_error("Mix_OpenAudio() failed: " + std::string(Mix_GetError()));
+    }
+
+    returned_code = Mix_AllocateChannels(32);
+    if (returned_code != 32) {
+        throw std::runtime_error("Mix_AllocateChannels() failed: " + std::string(Mix_GetError()));
     }
 
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
@@ -67,16 +72,16 @@ Game& Game::GetInstance() {
     return *instance;
 }
 
-State& Game::GetState() const {
+State& Game::GetState() {
     return *state;
 }
 
-SDL_Renderer* Game::GetRenderer() const {
+SDL_Renderer* Game::GetRenderer() {
     return renderer;
 }
 
 void Game::Run() {
-    while(!state->QuitRequested()) {
+    while (!state->QuitRequested()) {
         state->Update(0);
         state->Render();
         SDL_RenderPresent(renderer);

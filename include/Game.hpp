@@ -14,8 +14,8 @@ class Game {
     public: // methods
         ~Game();
         void Run();
-        SDL_Renderer* GetRenderer() const;
-        State& GetState() const;
+        SDL_Renderer* GetRenderer();
+        State& GetState();
 		static Game& GetInstance();
     
     private: // attributes
