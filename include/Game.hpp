@@ -2,8 +2,6 @@
 #define GAME_HPP
 
 #include <string>
-#include <exception>
-#include <stdexcept>
 
 #define INCLUDE_SDL
 #include "SDL_include.h"
@@ -11,13 +9,13 @@
 
 class Game {
 	private: // constructor
-        Game(std::string, int, int height);
+        Game(std::string, int width, int height);
 
     public: // methods
         ~Game();
         void Run();
-        SDL_Renderer* GetRenderer();
-        State& GetState();
+        SDL_Renderer* GetRenderer() const;
+        State& GetState() const;
 		static Game& GetInstance();
     
     private: // attributes
