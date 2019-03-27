@@ -1,4 +1,4 @@
-#include "State.hpp"
+#include "State.h"
 
 State::State() : quitRequested(false) {
     bg = new Sprite("assets/img/ocean.jpg");
@@ -21,6 +21,6 @@ void State::Render() {
     bg->Render(0, 0);
 }
 
-bool State::QuitRequested() {
+bool State::QuitRequested() const {
     return quitRequested;
 }

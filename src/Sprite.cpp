@@ -1,8 +1,8 @@
 #include <stdexcept>
 #include <iostream>
 
-#include "Sprite.hpp"
-#include "Game.hpp"
+#include "Sprite.h"
+#include "Game.h"
 
 Sprite::Sprite() : texture(nullptr) {}
 

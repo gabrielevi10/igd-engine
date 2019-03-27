@@ -5,10 +5,10 @@
 
 #define INCLUDE_SDL
 #include "SDL_include.h"
-#include "State.hpp"
+#include "State.h"
 
 class Game {
-	private: // constructor
+    private: // constructor
         Game(std::string, int width, int height);
 
     public: // methods
@@ -16,7 +16,7 @@ class Game {
         void Run();
         SDL_Renderer* GetRenderer();
         State& GetState();
-		static Game& GetInstance();
+        static Game& GetInstance();
     
     private: // attributes
         static Game* instance;

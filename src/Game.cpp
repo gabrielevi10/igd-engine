@@ -5,7 +5,7 @@
 #define INCLUDE_SDL_MIXER
 #include "SDL_include.h"
 
-#include "Game.hpp"
+#include "Game.h"
 
 Game* Game::instance = nullptr;
 

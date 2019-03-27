@@ -1,15 +1,15 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 
-#include "Music.hpp"
-#include "Sprite.hpp"
+#include "Music.h"
+#include "Sprite.h"
 
 class State {
     public: // methods and constructor
         State();
         ~State();
 
-        bool QuitRequested();
+        bool QuitRequested() const;
         void LoadAssets();
         void Update(float dt);
         void Render();

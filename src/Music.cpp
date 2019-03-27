@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <iostream>
 
-#include "Music.hpp"
+#include "Music.h"
 
 Music::Music() : music(nullptr) {}
 
