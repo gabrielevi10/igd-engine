@@ -3,3 +3,5 @@
 bin
 dep
 GAME
+TEST
+runner.cpp

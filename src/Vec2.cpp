@@ -19,7 +19,7 @@ Vec2& Vec2::operator=(const Vec2& other) {
     return *this;
 }
 
-Vec2 Vec2::operator*(const float scalar) const {
+Vec2 Vec2::operator*(const float& scalar) const {
     return Vec2(x*scalar, y*scalar);
 }
 
@@ -37,5 +37,14 @@ Vec2 Vec2::Normalize() {
 
 double Vec2::Distance(const Vec2& other) const {
     return (*this - other).Magnitude(); 
+}
+
+double Vec2::Inclination() const {
+    return atan2(x, y);
+}
+
+void Vec2::Rotate(const float& angle) {
+    x = x * cos(angle) - y * sin(angle);
+    y = y * cos(angle) + x * sin(angle);
 }
 
