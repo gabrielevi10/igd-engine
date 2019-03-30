@@ -3,21 +3,18 @@
 GameObject::GameObject() : isDead(false) {}
 
 GameObject::~GameObject() {
-    std::vector<Component*>::reverse_iterator rit = components.rbegin();
-    for (; rit != components.rend(); ++rit)
-        delete *rit;
     components.clear();
 }
 
 void GameObject::Update(const float& dt) {
-    for (Component* cp : components) {
-        cp->Update(dt);
+    for (uint32_t i = 0; i < components.size(); i++) {
+        components[i]->Update(dt);
     }
 }
 
 void GameObject::Render() {
-    for (Component* cp : components) {
-        cp->Render();
+    for (uint32_t i = 0; i < components.size(); i++) {
+        components[i]->Render();
     }
 }
 
@@ -29,25 +26,22 @@ void GameObject::RequestDelete() {
     isDead = true;
 }
 
-void GameObject::AddComponent(Component* cpt) {
+void GameObject::AddComponent(std::unique_ptr<Component> cpt) {
     components.push_back(cpt);
 }
 
-void GameObject::RemoveComponent(Component* cpt) {
-    int index = 0;
-    for (Component* cp : components) {
-        if (cp == cpt) {
-            delete cp;
-            components.erase(components.begin(), components.begin() + index);
+void GameObject::RemoveComponent(std::unique_ptr<Component> cpt) {
+    for (uint32_t i = 0; i < components.size(); i++) {
+        if (components[i] == cpt) {
+            components.erase(components.begin() + i);
         }
-        index++;
     }
 }
 
-Component* GameObject::GetComponent(const std::string& type) {
-    for (Component* cp : components) {
-        if (cp->Is(type)) {
-            return cp;
+std::unique_ptr<Component> GameObject::GetComponent(const std::string& type) {
+    for (uint32_t i = 0; i < components.size(); i++) {
+        if (components[i]->Is(type)) {
+            return std::move(components[i]);
         }
     }
     return nullptr;

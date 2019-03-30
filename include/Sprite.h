@@ -11,7 +11,7 @@
 class Sprite : public Component {
     public:
         Sprite(GameObject&);
-        Sprite(const std::string&, GameObject&);
+        Sprite(GameObject&, const std::string&);
         ~Sprite();
 
         void Open(const std::string&);

@@ -1,11 +1,14 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 
+#include <memory>
+
 #include "Music.h"
 #include "Sprite.h"
+#include "GameObject.h"
 
 class State {
-    public: // methods and constructor
+    public:
         State();
         ~State();
 
@@ -14,10 +17,14 @@ class State {
         void Update(float dt);
         void Render();
     
-    private: // attributes
+    private:
+        void Input();
+        void AddObject(int, int);
+
         Sprite* bg;
         Music* music;
         bool quitRequested;
+        std::vector<std::unique_ptr<GameObject>> objectArray;
 };
 
 #endif
