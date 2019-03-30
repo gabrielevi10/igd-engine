@@ -4,9 +4,9 @@
 #include "Sprite.h"
 #include "Game.h"
 
-Sprite::Sprite() : texture(nullptr) {}
+Sprite::Sprite(GameObject& associated) : Component(associated), texture(nullptr) {}
 
-Sprite::Sprite(std::string file) : texture(nullptr) {
+Sprite::Sprite(const std::string& file, GameObject& associated) : Component(associated), texture(nullptr) {
     Open(file);  
 }
 
@@ -16,7 +16,7 @@ Sprite::~Sprite() {
     }
 }
 
-void Sprite::Open(std::string file) {
+void Sprite::Open(const std::string& file) {
     int code;
 
     if (texture != nullptr) {
@@ -43,12 +43,12 @@ void Sprite::SetClip(int x, int y, int w, int h) {
     clipRect.h = h;
 }
 
-void Sprite::Render(int x, int y) {
+void Sprite::Render() {
     SDL_Rect dstrect;
     int returned_code;
 
-    dstrect.x = x;
-    dstrect.y = y;
+    dstrect.x = associated.box.x;
+    dstrect.y = associated.box.y;
     dstrect.w = clipRect.w;
     dstrect.h = clipRect.h;
 
@@ -68,4 +68,10 @@ int Sprite::GetHeight() const {
 
 bool Sprite::IsOpen() const {
     return texture != nullptr;
+}
+
+void Sprite::Update(const float& dt) {}
+
+bool Sprite::Is(const std::string& type) {
+    return false;
 }

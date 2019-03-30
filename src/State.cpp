@@ -1,7 +1,8 @@
 #include "State.h"
+#include <memory>
 
 State::State() : quitRequested(false) {
-    bg = new Sprite("assets/img/ocean.jpg");
+    // bg = new Sprite("assets/img/ocean.jpg", nullptr);
     music = new Music("assets/audio/stageState.ogg"); 
     music->Play();
 }
@@ -18,7 +19,7 @@ void State::Update(float dt) {
 }
 
 void State::Render() {
-    bg->Render(0, 0);
+    bg->Render();
 }
 
 bool State::QuitRequested() const {
