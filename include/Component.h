@@ -8,7 +8,7 @@ class GameObject;
 class Component {
     public:
         Component(GameObject& a) : associated(a) {};
-        virtual ~Component() {};
+        virtual ~Component() = default;
 
         virtual void Update(const float&) = 0;
         virtual void Render() = 0;

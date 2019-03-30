@@ -16,11 +16,12 @@ class Sprite : public Component {
 
         void Open(const std::string&);
         void SetClip(int x, int  y, int w, int h);
-        void Render();
         int GetWidth() const;
         int GetHeight() const;
         bool IsOpen() const;
+        
         void Update(const float&);
+        void Render();
         bool Is(const std::string&);
 
     private:
