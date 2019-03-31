@@ -1,3 +1,4 @@
+#include <iostream>
 #include "GameObject.h"
 
 GameObject::GameObject() : isDead(false) {}
@@ -27,7 +28,7 @@ void GameObject::RequestDelete() {
 }
 
 void GameObject::AddComponent(std::unique_ptr<Component> cpt) {
-    components.push_back(cpt);
+    components.emplace_back(std::move(cpt));
 }
 
 void GameObject::RemoveComponent(std::unique_ptr<Component> cpt) {

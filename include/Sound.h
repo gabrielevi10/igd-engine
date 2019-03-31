@@ -12,7 +12,7 @@ class Sound : public Component {
         Sound(GameObject&, const std::string&);
         ~Sound();
 
-        void Play(int);
+        void Play(int times = 1);
         void Stop();
         void Open(const std::string&);
         bool IsOpen() const;

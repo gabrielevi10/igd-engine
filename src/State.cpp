@@ -1,5 +1,7 @@
 #include <memory>
 
+#include <iostream>
+
 #include "State.h"
 #include "Face.h"
 #include "Sound.h"
@@ -7,21 +9,19 @@
 #define PI 3.14159265359
 
 State::State() : quitRequested(false) {
-    GameObject go;
+    GameObject* go = new GameObject();
     // bg = new Sprite(go, "assets/img/ocean.jpg");
-    go.AddComponent(std::unique_ptr<Component>(new Sprite(go, "assets/img/ocean.jpg")));
-    go.box.x = 0;
-    go.box.y = 0;
-    // go.AddComponent(&Sound(go, "../assets/audio/boom.wav"));
-    // go.AddComponent(&Face(go));
+    go->AddComponent(std::unique_ptr<Component>(new Sprite(*go, "assets/img/ocean.jpg")));
+    go->box.x = 0;
+    go->box.y = 0;
     // music = new Music("assets/audio/stageState.ogg"); 
     // music->Play();
     objectArray.emplace_back(go);
 }
 
 State::~State() {
-    delete bg;
-    delete music;
+    // delete bg;
+    // delete music;
     objectArray.clear();
 }
 
@@ -61,14 +61,15 @@ void State::Input() {
 		}
 		if(event.type == SDL_MOUSEBUTTONDOWN) {
 			for(int i = objectArray.size() - 1; i >= 0; --i) {
-				if (objectArray[i]->box.Contains({(float)mouseX, (float)mouseY})) {
-					// auto face = (Face*)objectArray[i]->GetComponent("Face").get();
-					// if (nullptr != face) {
-					// 	// Aplica dano
-					// 	face->Damage(std::rand() % 10 + 10);
-					// 	// Sai do loop (só queremos acertar um)
-					// 	break;
-					// }
+				GameObject* go = (GameObject*) objectArray[i].get();
+				if(go->box.Contains({(float)mouseX, (float)mouseY})) {
+					Face* face = (Face*)go->GetComponent("Face").get();
+					if ( nullptr != face ) {
+						// Aplica dano
+						face->Damage(std::rand() % 10 + 10);
+						// Sai do loop (só queremos acertar um)
+						break;
+					}
 				}
 			}
 		}
@@ -87,12 +88,12 @@ void State::Input() {
 }
 
 void State::AddObject(int mouseX, int mouseY) {
-    GameObject go;
-    go.AddComponent(std::unique_ptr<Component>(new Sprite(go, "../assets/img/penguinface.png")));
-    // TODO: Compensar o tamanho da sprite
-    go.box.x = mouseX;
-    go.box.y = mouseY;
-    go.AddComponent(std::unique_ptr<Component> (new Sound(go, "../assets/audio/boom.wav")));
-    go.AddComponent(std::unique_ptr<Component> (new Face(go)));
+    GameObject* go = new GameObject();
+    go->AddComponent(std::unique_ptr<Component>(new Sprite(*go, "assets/img/penguinface.png")));
+    // // TODO: Compensar o tamanho da sprite
+    go->box.x = mouseX;
+    go->box.y = mouseY;
+    go->AddComponent(std::unique_ptr<Component>(new Sound(*go, "assets/audio/boom.wav")));
+    go->AddComponent(std::unique_ptr<Component>(new Face(*go)));
     objectArray.emplace_back(go);
 }

@@ -13,10 +13,12 @@ Sound::~Sound() {
         Stop();
         Mix_FreeChunk(chunk);
     }
-    delete chunk;
+    else {
+        delete chunk;
+    }
 }
 
-void Sound::Play(int times = 1) {
+void Sound::Play(int times) {
     channel = Mix_PlayChannel(-1, chunk, times - 1);
     if (channel == -1) {
         throw std::runtime_error("Sound Play() failed: " + std::string(Mix_GetError()));
