@@ -56,14 +56,14 @@ void State::Input() {
 	SDL_GetMouseState(&mouseX, &mouseY);
 
 	while (SDL_PollEvent(&event)) {
-		if(event.type == SDL_QUIT) {
+		if (event.type == SDL_QUIT) {
 			quitRequested = true;
 		}
-		if(event.type == SDL_MOUSEBUTTONDOWN) {
-			for(int i = objectArray.size() - 1; i >= 0; --i) {
+		if (event.type == SDL_MOUSEBUTTONDOWN) {
+			for (int i = objectArray.size() - 1; i >= 0; --i) {
 				GameObject* go = (GameObject*) objectArray[i].get();
-				if(go->box.Contains({(float)mouseX, (float)mouseY})) {
-					Face* face = (Face*)go->GetComponent("Face").get();
+				if (go->box.Contains({(float)mouseX, (float)mouseY})) {
+					Face* face = (Face*)go->GetComponent("Face");
 					if ( nullptr != face ) {
 						// Aplica dano
 						face->Damage(std::rand() % 10 + 10);
@@ -80,7 +80,7 @@ void State::Input() {
 			else {
                 Vec2 aux = Vec2(200, 0);
                 aux.Rotate(-PI + PI*(rand() % 1001)/500.0);
-				Vec2 objPos = aux + Vec2( mouseX, mouseY );
+				Vec2 objPos = aux + Vec2(mouseX, mouseY);
 				AddObject((int)objPos.x, (int)objPos.y);
 			}
 		}
@@ -89,10 +89,13 @@ void State::Input() {
 
 void State::AddObject(int mouseX, int mouseY) {
     GameObject* go = new GameObject();
-    go->AddComponent(std::unique_ptr<Component>(new Sprite(*go, "assets/img/penguinface.png")));
-    // // TODO: Compensar o tamanho da sprite
-    go->box.x = mouseX;
-    go->box.y = mouseY;
+    Sprite* s = new Sprite(*go, "assets/img/penguinface.png");
+
+    go->AddComponent(std::unique_ptr<Component>(s));
+    go->box.x = mouseX - s->GetWidth()/2;
+    go->box.y = mouseY - s->GetHeight()/2;
+    go->box.h = s->GetHeight();
+    go->box.w = s->GetWidth();
     go->AddComponent(std::unique_ptr<Component>(new Sound(*go, "assets/audio/boom.wav")));
     go->AddComponent(std::unique_ptr<Component>(new Face(*go)));
     objectArray.emplace_back(go);

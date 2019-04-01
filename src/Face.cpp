@@ -1,13 +1,19 @@
 #include "Face.h"
 #include "Sound.h"
 
+#include <iostream>
+
 Face::Face(GameObject& associated) : Component(associated), hitpoints(30) {}
 
 void Face::Damage(int damage) {
     hitpoints -= damage;
+    Sound* sound;
+    sound = (Sound*)associated.GetComponent("Sound");
+    if (sound == nullptr)
+        throw std::runtime_error("Sound is a nullptr");
     if (hitpoints <= 0) {
         associated.RequestDelete();
-        ((Sound*)associated.GetComponent("Sound").get())->Play();
+        sound->Play(1); 
     } 
 }
 

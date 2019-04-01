@@ -73,5 +73,5 @@ bool Sprite::IsOpen() const {
 void Sprite::Update(const float& dt) {}
 
 bool Sprite::Is(const std::string& type) {
-    return false;
+    return(type == "Sprite");
 }

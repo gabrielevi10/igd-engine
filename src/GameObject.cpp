@@ -39,10 +39,10 @@ void GameObject::RemoveComponent(std::unique_ptr<Component> cpt) {
     }
 }
 
-std::unique_ptr<Component> GameObject::GetComponent(const std::string& type) {
+Component* GameObject::GetComponent(const std::string& type) {
     for (uint32_t i = 0; i < components.size(); i++) {
         if (components[i]->Is(type)) {
-            return std::move(components[i]);
+            return components[i].get();
         }
     }
     return nullptr;

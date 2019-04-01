@@ -34,5 +34,5 @@ Vec2 Rect::Center() const {
 }
 
 bool Rect::Contains(const Vec2& point) const {
-    return(point.x < (x + w) && point.y < (y + h));
+    return(point.x <= (x + w) && point.y <= (y + h) && (point.x >= x && point.y >= y));
 }

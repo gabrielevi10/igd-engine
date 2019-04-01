@@ -1,5 +1,7 @@
 #include "Vec2.h"
 #include <cmath>
+#include <iostream>
+#include <vector>
 
 Vec2::Vec2() : x(0), y(0) {}
 
@@ -44,7 +46,9 @@ double Vec2::Inclination() const {
 }
 
 void Vec2::Rotate(const float& angle) {
-    x = x * cos(angle) - y * sin(angle);
-    y = y * cos(angle) + x * sin(angle);
+    float px = x * cos(angle) - y * sin(angle);
+    float py = x * sin(angle) + y * cos(angle);
+    x = px;
+    y = py;
 }
 

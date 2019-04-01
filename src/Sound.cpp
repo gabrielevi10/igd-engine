@@ -1,5 +1,6 @@
 #include "Sound.h"
 
+#include <iostream>
 #include <stdexcept>
 
 Sound::Sound(GameObject& associated) : Component(associated), chunk(nullptr) {}
@@ -9,12 +10,14 @@ Sound::Sound(GameObject& associatetd, const std::string& file) : Component(assoc
 }
 
 Sound::~Sound() {
-    if (chunk != nullptr) {
-        Stop();
-        Mix_FreeChunk(chunk);
-    }
-    else {
-        delete chunk;
+    if (!Mix_Playing(channel)) {
+        if (chunk != nullptr) {
+            Stop();
+            Mix_FreeChunk(chunk);
+        }
+        else {
+            delete chunk;
+        }
     }
 }
 
@@ -45,4 +48,6 @@ void Sound::Update(const float& dt) {}
 
 void Sound::Render() {}
 
-bool Sound::Is(const std::string& file) {}
+bool Sound::Is(const std::string& type) {
+    return (type == "Sound");
+}
