@@ -10,7 +10,6 @@
 
 State::State() : quitRequested(false) {
     GameObject* go = new GameObject();
-    // bg = new Sprite(go, "assets/img/ocean.jpg");
     go->AddComponent(std::unique_ptr<Component>(new Sprite(*go, "assets/img/ocean.jpg")));
     go->box.x = 0;
     go->box.y = 0;
@@ -20,7 +19,6 @@ State::State() : quitRequested(false) {
 }
 
 State::~State() {
-    // delete bg;
     delete music;
     objectArray.clear();
 }

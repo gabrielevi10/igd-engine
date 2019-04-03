@@ -10,13 +10,16 @@ Sound::Sound(GameObject& associatetd, const std::string& file) : Component(assoc
 }
 
 Sound::~Sound() {
-    if (!Mix_Playing(channel)) {
+    bool flag = true;
+    while (!Mix_Playing(channel) && flag) {
         if (chunk != nullptr) {
             Stop();
             Mix_FreeChunk(chunk);
+            flag = false;
         }
         else {
             delete chunk;
+            flag = false;
         }
     }
 }

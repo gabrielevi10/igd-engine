@@ -21,7 +21,6 @@ class State {
         void Input();
         void AddObject(int, int);
 
-        Sprite* bg;
         Music* music;
         bool quitRequested;
         std::vector<std::unique_ptr<GameObject>> objectArray;
