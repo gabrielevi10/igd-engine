@@ -14,14 +14,14 @@ State::State() : quitRequested(false) {
     go->AddComponent(std::unique_ptr<Component>(new Sprite(*go, "assets/img/ocean.jpg")));
     go->box.x = 0;
     go->box.y = 0;
-    // music = new Music("assets/audio/stageState.ogg"); 
-    // music->Play();
+    music = new Music("assets/audio/stageState.ogg"); 
+    music->Play();
     objectArray.emplace_back(go);
 }
 
 State::~State() {
     // delete bg;
-    // delete music;
+    delete music;
     objectArray.clear();
 }
 
@@ -64,7 +64,7 @@ void State::Input() {
 				GameObject* go = (GameObject*) objectArray[i].get();
 				if (go->box.Contains({(float)mouseX, (float)mouseY})) {
 					Face* face = (Face*)go->GetComponent("Face");
-					if ( nullptr != face ) {
+					if (nullptr != face) {
 						// Aplica dano
 						face->Damage(std::rand() % 10 + 10);
 						// Sai do loop (só queremos acertar um)
