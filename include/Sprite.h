@@ -22,6 +22,7 @@ class Sprite : public Component {
         
         void Update(const float&);
         void Render();
+        void Render(float, float);
         bool Is(const std::string&);
 
     private:
