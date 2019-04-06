@@ -74,7 +74,7 @@ bool Sprite::IsOpen() const {
     return texture != nullptr;
 }
 
-void Sprite::Update(const float& dt) {}
+void Sprite::Update(const float dt) {}
 
 bool Sprite::Is(const std::string& type) {
     return(type == "Sprite");

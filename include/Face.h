@@ -9,7 +9,7 @@ class Face : public Component {
         
         void Damage(int damage);
         
-        void Update(const float& dt);
+        void Update(float dt);
         void Render();
         bool Is(const std::string& type);
 

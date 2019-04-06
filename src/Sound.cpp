@@ -47,7 +47,7 @@ void Sound::Open(const std::string& file) {
     }
 }
 
-void Sound::Update(const float& dt) {}
+void Sound::Update(const float dt) {}
 
 void Sound::Render() {}
 

@@ -5,17 +5,28 @@
 #include "State.h"
 #include "Face.h"
 #include "Sound.h"
+#include "TileMap.h"
+#include "TileSet.h"
 
 #define PI 3.14159265359
 
 State::State() : quitRequested(false) {
     GameObject* go = new GameObject();
+    GameObject* go1 = new GameObject();
+
     go->AddComponent(std::unique_ptr<Component>(new Sprite(*go, "assets/img/ocean.jpg")));
     go->box.x = 0;
     go->box.y = 0;
     music = new Music("assets/audio/stageState.ogg"); 
     music->Play();
     objectArray.emplace_back(go);
+    
+    TileSet* tileSet = new TileSet(384, 192, "assets/img/tileset.png");
+    TileMap* tileMap = new TileMap(*go1, "assets/map/tileMap.txt", tileSet);
+    go1->AddComponent(std::unique_ptr<Component>(tileMap));
+    go1->box.x = 0;
+    go1->box.y = 0;
+    objectArray.emplace_back(go1);
 }
 
 State::~State() {

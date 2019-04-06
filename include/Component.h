@@ -10,7 +10,7 @@ class Component {
         Component(GameObject& a) : associated(a) {};
         virtual ~Component() = default;
 
-        virtual void Update(const float&) = 0;
+        virtual void Update(const float) = 0;
         virtual void Render() = 0;
         virtual bool Is(const std::string&) = 0;
     

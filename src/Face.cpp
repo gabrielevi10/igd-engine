@@ -17,7 +17,9 @@ void Face::Damage(int damage) {
     } 
 }
 
-void Face::Update(const float& dt) {}
+void Face::Update(float dt) {
+    
+}
 
 void Face::Render() {}
 

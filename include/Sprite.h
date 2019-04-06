@@ -20,9 +20,9 @@ class Sprite : public Component {
         int GetHeight() const;
         bool IsOpen() const;
         
-        void Update(const float&);
+        void Update(const float dt);
         void Render();
-        void Render(float, float);
+        void Render(float x, float y);
         bool Is(const std::string&);
 
     private:
