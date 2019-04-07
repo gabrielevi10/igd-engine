@@ -28,7 +28,7 @@ void TileMap::Load(const std::string& file) {
                 tileMatrix.push_back(std::stoi(s) - 1);
             }
         }
-    } 
+    }
     f.close();
 }
 
@@ -37,14 +37,18 @@ void TileMap::SetTileSet(TileSet* tileSet) {
 }
 
 int& TileMap::At(int x, int y, int z) {
-    return tileMatrix[x + mapWidth*y + mapWidth*mapHeight*z];     
+    return tileMatrix[x + mapHeight*y + mapWidth*mapHeight*z];     
 }
 
 void TileMap::RenderLayer(int layer, int cameraX, int cameraY) {
+    int x = 0, y = 0;
     for (int i = 0; i < mapHeight; i++) {
         for (int j = 0; j < mapWidth; j++) {
-            tileSet->RenderTile(At(i, j, layer), i + 64, j + 64);
+            tileSet->RenderTile(At(j, i, layer), x, y);
+            x += tileSet->GetTileWidth();
         }
+        x = 0;
+        y += tileSet->GetTileHeight();
     }
 }
 

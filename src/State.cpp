@@ -21,7 +21,7 @@ State::State() : quitRequested(false) {
     music->Play();
     objectArray.emplace_back(go);
     
-    TileSet* tileSet = new TileSet(384, 192, "assets/img/tileset.png");
+    TileSet* tileSet = new TileSet(64, 64, "assets/img/tileset.png");
     TileMap* tileMap = new TileMap(*go1, "assets/map/tileMap.txt", tileSet);
     go1->AddComponent(std::unique_ptr<Component>(tileMap));
     go1->box.x = 0;

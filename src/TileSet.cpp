@@ -1,12 +1,18 @@
 #include "TileSet.h"
 
-TileSet::TileSet(const int& tw, const int& th, const std::string& file) : tileSet(tileSetGo, file), tileWidth(tw), tileHeight(th) {
+#include <iostream>
+
+TileSet::TileSet(const int tileWidth, const int tileHeight, const std::string& file) : tileSet(tileSetGo, file), tileWidth(tileWidth), tileHeight(tileHeight) {
     rows = tileSet.GetHeight()/tileHeight;
     columns = tileSet.GetWidth()/tileWidth;
 }
 
 void TileSet::RenderTile(uint32_t index, float x, float y) {
+    int cx, cy;
     if (index >= 0 && index < columns*rows - 1) {
+        cx = index % columns;
+        cy = index / columns;
+        tileSet.SetClip(cx * tileWidth, cy * tileHeight, tileWidth, tileHeight);
         tileSet.Render(x, y);
     }
 }
