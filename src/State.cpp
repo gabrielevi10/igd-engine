@@ -14,7 +14,7 @@ State::State() : quitRequested(false) {
     GameObject* go = new GameObject();
     GameObject* go1 = new GameObject();
 
-    go->AddComponent(std::unique_ptr<Component>(new Sprite(*go, "assets/img/ocean.jpg")));
+    go->AddComponent(std::shared_ptr<Component>(new Sprite(*go, "assets/img/ocean.jpg")));
     go->box.x = 0;
     go->box.y = 0;
     music = new Music("assets/audio/stageState.ogg"); 
@@ -23,7 +23,7 @@ State::State() : quitRequested(false) {
     
     TileSet* tileSet = new TileSet(64, 64, "assets/img/tileset.png");
     TileMap* tileMap = new TileMap(*go1, "assets/map/tileMap.txt", tileSet);
-    go1->AddComponent(std::unique_ptr<Component>(tileMap));
+    go1->AddComponent(std::shared_ptr<Component>(tileMap));
     go1->box.x = 0;
     go1->box.y = 0;
     objectArray.emplace_back(go1);
@@ -70,9 +70,9 @@ void State::Input() {
 		}
 		if (event.type == SDL_MOUSEBUTTONDOWN) {
 			for (int i = objectArray.size() - 1; i >= 0; --i) {
-				GameObject* go = (GameObject*) objectArray[i].get();
+				std::shared_ptr<GameObject> go = objectArray[i];
 				if (go->box.Contains({(float)mouseX, (float)mouseY})) {
-					Face* face = (Face*)go->GetComponent("Face");
+					std::shared_ptr<Face> face = std::dynamic_pointer_cast<Face>(go->GetComponent("Face"));
 					if (nullptr != face) {
 						// Aplica dano
 						face->Damage(std::rand() % 10 + 10);
@@ -100,12 +100,12 @@ void State::AddObject(int mouseX, int mouseY) {
     GameObject* go = new GameObject();
     Sprite* s = new Sprite(*go, "assets/img/penguinface.png");
 
-    go->AddComponent(std::unique_ptr<Component>(s));
+    go->AddComponent(std::shared_ptr<Component>(s));
     go->box.x = mouseX - s->GetWidth()/2;
     go->box.y = mouseY - s->GetHeight()/2;
     go->box.h = s->GetHeight();
     go->box.w = s->GetWidth();
-    go->AddComponent(std::unique_ptr<Component>(new Sound(*go, "assets/audio/boom.wav")));
-    go->AddComponent(std::unique_ptr<Component>(new Face(*go)));
+    go->AddComponent(std::shared_ptr<Component>(new Sound(*go, "assets/audio/boom.wav")));
+    go->AddComponent(std::shared_ptr<Component>(new Face(*go)));
     objectArray.emplace_back(go);
 }

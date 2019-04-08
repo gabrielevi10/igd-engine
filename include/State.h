@@ -23,7 +23,7 @@ class State {
 
         Music* music;
         bool quitRequested;
-        std::vector<std::unique_ptr<GameObject>> objectArray;
+        std::vector<std::shared_ptr<GameObject>> objectArray;
 };
 
 #endif

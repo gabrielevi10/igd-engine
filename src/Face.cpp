@@ -7,8 +7,8 @@ Face::Face(GameObject& associated) : Component(associated), hitpoints(30) {}
 
 void Face::Damage(int damage) {
     hitpoints -= damage;
-    Sound* sound;
-    sound = (Sound*)associated.GetComponent("Sound");
+    std::shared_ptr<Sound> sound;
+    sound = std::dynamic_pointer_cast<Sound>(associated.GetComponent("Sound"));
     if (sound == nullptr)
         throw std::runtime_error("Sound is a nullptr");
     if (hitpoints <= 0) {
