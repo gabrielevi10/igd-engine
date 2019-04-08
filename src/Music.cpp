@@ -1,20 +1,16 @@
+#include "Music.h"
+#include "Resources.h"
+
 #include <stdexcept>
 #include <iostream>
 
-#include "Music.h"
-
 Music::Music() : music(nullptr) {}
 
-Music::Music(std::string file) : music(nullptr) {
+Music::Music(const std::string& file) : music(nullptr) {
     Open(file);
 }
 
-Music::~Music() {
-    Stop(0);
-    if (music != nullptr) {
-        Mix_FreeMusic(music);
-    }
-}
+Music::~Music() {}
 
 void Music::Play(int times) {
     if (music != nullptr) {
@@ -30,11 +26,8 @@ void Music::Stop(int msToStop) {
     }
 }
 
-void Music::Open(std::string file) {
-    music = Mix_LoadMUS(file.c_str());
-    if (music == nullptr) {
-        throw std::runtime_error("Music Open() failed: " + std::string(Mix_GetError()));
-    }
+void Music::Open(const std::string& file) {
+    music = Resources::GetMusic(file);
 }
 
 bool Music::IsOpen() const {

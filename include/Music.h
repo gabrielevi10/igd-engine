@@ -10,12 +10,12 @@
 class Music {
     public:
         Music();
-        Music(std::string file);
+        Music(const std::string& file);
         ~Music();
 
         void Play(int time = -1);
         void Stop(int msToStop);
-        void Open(std::string file);
+        void Open(const std::string& file);
         bool IsOpen() const;
 
     private:

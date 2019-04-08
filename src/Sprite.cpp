@@ -3,6 +3,7 @@
 
 #include "Sprite.h"
 #include "Game.h"
+#include "Resources.h"
 
 Sprite::Sprite(GameObject& associated) : Component(associated), texture(nullptr) {}
 
@@ -10,23 +11,12 @@ Sprite::Sprite(GameObject& associated, const std::string& file) : Component(asso
     Open(file);  
 }
 
-Sprite::~Sprite() {
-    if (texture != nullptr) {
-        SDL_DestroyTexture(texture);
-    }
-}
+Sprite::~Sprite() {}
 
 void Sprite::Open(const std::string& file) {
     int code;
 
-    if (texture != nullptr) {
-        SDL_DestroyTexture(texture);
-    }
-
-    texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), file.c_str());
-    if (texture == nullptr) {
-        throw std::runtime_error("Sprite IMG_LoadTexture failed: " + std::string(SDL_GetError()));
-    }
+    texture = Resources::GetImage(file);
 
     code = SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
     if (code != 0) {
