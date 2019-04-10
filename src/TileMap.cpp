@@ -1,10 +1,11 @@
 #include <fstream>
 #include <iostream>
+#include <memory>
 
 #include "TileMap.h"
 #include "Helpers.h"
 
-TileMap::TileMap(GameObject& associated, const std::string& file, TileSet* tileSet) : Component(associated), tileSet(tileSet) {
+TileMap::TileMap(GameObject& associated, const std::string& file, std::shared_ptr<TileSet> tileSet) : Component(associated), tileSet(tileSet) {
     Load(file);
 }
 
@@ -32,7 +33,7 @@ void TileMap::Load(const std::string& file) {
     f.close();
 }
 
-void TileMap::SetTileSet(TileSet* tileSet) {
+void TileMap::SetTileSet(std::shared_ptr<TileSet> tileSet) {
     this->tileSet = tileSet;
 }
 

@@ -21,9 +21,9 @@ State::State() : quitRequested(false) {
     music->Play();
     objectArray.emplace_back(go);
     
-    TileSet* tileSet = new TileSet(64, 64, "assets/img/tileset.png");
-    TileMap* tileMap = new TileMap(*go1, "assets/map/tileMap.txt", tileSet);
-    go1->AddComponent(std::shared_ptr<Component>(tileMap));
+    std::shared_ptr<TileSet> tileSet(new TileSet(64, 64, "assets/img/tileset.png"));
+    std::shared_ptr<Component> tileMap(new TileMap(*go1, "assets/map/tileMap.txt", tileSet));
+    go1->AddComponent(tileMap);
     go1->box.x = 0;
     go1->box.y = 0;
     objectArray.emplace_back(go1);
