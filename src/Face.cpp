@@ -1,5 +1,6 @@
 #include "Face.h"
 #include "Sound.h"
+#include "InputManager.h"
 
 #include <iostream>
 
@@ -9,8 +10,6 @@ void Face::Damage(int damage) {
     hitpoints -= damage;
     std::shared_ptr<Sound> sound;
     sound = std::dynamic_pointer_cast<Sound>(associated.GetComponent("Sound"));
-    if (sound == nullptr)
-        throw std::runtime_error("Sound is a nullptr");
     if (hitpoints <= 0) {
         associated.RequestDelete();
         sound->Play(1); 
@@ -18,7 +17,10 @@ void Face::Damage(int damage) {
 }
 
 void Face::Update(float dt) {
-    
+    InputManager& input = InputManager::GetInstance();
+    if (input.MousePress(1) && associated.box.Contains({(float)input.GetMouseX(), (float)input.GetMouseY()})) {
+        Damage(std::rand() % 10 + 10);
+    }
 }
 
 void Face::Render() {}

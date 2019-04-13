@@ -7,6 +7,7 @@
 #include "Sound.h"
 #include "TileMap.h"
 #include "TileSet.h"
+#include "InputManager.h"
 
 #define PI 3.14159265359
 
@@ -37,7 +38,17 @@ State::~State() {
 void State::LoadAssets() {}
 
 void State::Update(float dt) {
-    Input();
+    // Input();
+    InputManager& input = InputManager::GetInstance(); 
+    if (input.QuitRequested() || input.KeyPress(ESCAPE_KEY)) {
+        quitRequested = true;
+    }
+    if (input.KeyPress(SPACE_KEY)) {
+        Vec2 aux = Vec2(200, 0);
+        aux.Rotate(-PI + PI*(rand() % 1001)/500.0);
+        Vec2 objPos = aux + Vec2(input.GetMouseX(), input.GetMouseY());
+        AddObject((int)objPos.x, (int)objPos.y);
+    }
     for (uint32_t i = 0; i < objectArray.size(); i++) {
         objectArray[i]->Update(dt);
     }
@@ -56,44 +67,6 @@ void State::Render() {
 
 bool State::QuitRequested() const {
     return quitRequested;
-}
-
-void State::Input() {
-	SDL_Event event;
-	int mouseX, mouseY;
-
-	SDL_GetMouseState(&mouseX, &mouseY);
-
-	while (SDL_PollEvent(&event)) {
-		if (event.type == SDL_QUIT) {
-			quitRequested = true;
-		}
-		if (event.type == SDL_MOUSEBUTTONDOWN) {
-			for (int i = objectArray.size() - 1; i >= 0; --i) {
-				std::shared_ptr<GameObject> go = objectArray[i];
-				if (go->box.Contains({(float)mouseX, (float)mouseY})) {
-					std::shared_ptr<Face> face = std::dynamic_pointer_cast<Face>(go->GetComponent("Face"));
-					if (nullptr != face) {
-						// Aplica dano
-						face->Damage(std::rand() % 10 + 10);
-						// Sai do loop (só queremos acertar um)
-						break;
-					}
-				}
-			}
-		}
-		if (event.type == SDL_KEYDOWN) {
-			if (event.key.keysym.sym == SDLK_ESCAPE) {
-				quitRequested = true;
-			}
-			else {
-                Vec2 aux = Vec2(200, 0);
-                aux.Rotate(-PI + PI*(rand() % 1001)/500.0);
-				Vec2 objPos = aux + Vec2(mouseX, mouseY);
-				AddObject((int)objPos.x, (int)objPos.y);
-			}
-		}
-	}
 }
 
 void State::AddObject(int mouseX, int mouseY) {
