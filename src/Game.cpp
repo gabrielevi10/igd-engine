@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <iostream>
+#include <chrono>
 
 #define INCLUDE_SDL_IMAGE
 #define INCLUDE_SDL_MIXER
@@ -74,18 +75,30 @@ Game& Game::GetInstance() {
     return *instance;
 }
 
-State& Game::GetState() {
+State& Game::GetState() const {
     return *state;
 }
 
-SDL_Renderer* Game::GetRenderer() {
+SDL_Renderer* Game::GetRenderer() const {
     return renderer;
+}
+
+float Game::GetDeltaTime() const {
+    return dt;
+}
+
+void Game::CalculateDeltaTime() {
+    std::chrono::milliseconds aux(frameStart);
+    frameStart = SDL_GetTicks();
+    std::chrono::milliseconds aux1(frameStart);
+    dt = (float)std::chrono::duration_cast<std::chrono::seconds>(aux1 - aux).count();
 }
 
 void Game::Run() {
     while (!state->QuitRequested()) {
+        CalculateDeltaTime();
         InputManager::GetInstance().Update();
-        state->Update(0);
+        state->Update(dt);
         state->Render();
         SDL_RenderPresent(renderer);
         SDL_Delay(33);

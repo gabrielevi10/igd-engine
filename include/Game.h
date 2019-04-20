@@ -14,15 +14,20 @@ class Game {
     public: // methods
         ~Game();
         void Run();
-        SDL_Renderer* GetRenderer();
-        State& GetState();
+        SDL_Renderer* GetRenderer() const;
+        State& GetState() const;
         static Game& GetInstance();
+        float GetDeltaTime() const;
     
     private: // attributes
+        void CalculateDeltaTime();
+        
         static Game* instance;
         SDL_Window* window;
         SDL_Renderer *renderer;
         State* state;
+        uint32_t frameStart;
+        float dt;
 };
 
 #endif
