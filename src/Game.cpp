@@ -88,10 +88,9 @@ float Game::GetDeltaTime() const {
 }
 
 void Game::CalculateDeltaTime() {
-    std::chrono::milliseconds aux(frameStart);
-    frameStart = SDL_GetTicks();
-    std::chrono::milliseconds aux1(frameStart);
-    dt = (float)std::chrono::duration_cast<std::chrono::seconds>(aux1 - aux).count();
+    uint32_t aux = frameStart;
+    frameStart = SDL_GetTicks();   
+    dt = (float)(frameStart - aux)/1000;
 }
 
 void Game::Run() {

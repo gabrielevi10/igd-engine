@@ -2,6 +2,7 @@
 #include <iostream>
 #include <memory>
 
+#include "Camera.h"
 #include "TileMap.h"
 #include "Helpers.h"
 
@@ -45,7 +46,7 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY) {
     int x = 0, y = 0;
     for (int i = 0; i < mapHeight; i++) {
         for (int j = 0; j < mapWidth; j++) {
-            tileSet->RenderTile(At(j, i, layer), x, y);
+            tileSet->RenderTile(At(j, i, layer), x + cameraX, y + cameraY);
             x += tileSet->GetTileWidth();
         }
         x = 0;
@@ -67,7 +68,7 @@ int TileMap::GetDepth() const {
 
 void TileMap::Render() {
     for (int layer = 0; layer < mapDepth; layer++) {
-        RenderLayer(layer);
+        RenderLayer(layer, Camera::pos.x, Camera::pos.y);
     }
 }
 

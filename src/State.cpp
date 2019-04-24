@@ -8,6 +8,7 @@
 #include "TileMap.h"
 #include "TileSet.h"
 #include "InputManager.h"
+#include "Camera.h"
 
 #define PI 3.14159265359
 
@@ -28,6 +29,9 @@ State::State() : quitRequested(false) {
     go1->box.x = 0;
     go1->box.y = 0;
     objectArray.emplace_back(go1);
+
+    Camera::pos = {0, 0};
+    Camera::speed = {0, 0};
 }
 
 State::~State() {
@@ -38,8 +42,8 @@ State::~State() {
 void State::LoadAssets() {}
 
 void State::Update(float dt) {
-    // Input();
     InputManager& input = InputManager::GetInstance(); 
+    
     if (input.QuitRequested() || input.KeyPress(ESCAPE_KEY)) {
         quitRequested = true;
     }
@@ -49,6 +53,9 @@ void State::Update(float dt) {
         Vec2 objPos = aux + Vec2(input.GetMouseX(), input.GetMouseY());
         AddObject((int)objPos.x, (int)objPos.y);
     }
+
+    Camera::Update(dt);
+    
     for (uint32_t i = 0; i < objectArray.size(); i++) {
         objectArray[i]->Update(dt);
     }
