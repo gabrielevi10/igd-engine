@@ -19,7 +19,7 @@ class TileMap : public Component {
 
         void Render();
         void Update(float dt);
-        bool Is(const std::string& type);
+        bool Is(const std::string& type) const;
 
     private:
         std::vector<int> tileMatrix;

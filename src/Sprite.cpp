@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "Game.h"
 #include "Resources.h"
+#include "Camera.h"
 
 Sprite::Sprite(GameObject& associated) : Component(associated), texture(nullptr) {}
 
@@ -41,8 +42,8 @@ void Sprite::Render(float x, float y) {
     SDL_Rect dstrect;
     int returned_code;
 
-    dstrect.x = x;
-    dstrect.y = y;
+    dstrect.x = x + Camera::pos.x;
+    dstrect.y = y + Camera::pos.y;
     dstrect.w = clipRect.w;
     dstrect.h = clipRect.h;
 
@@ -66,6 +67,6 @@ bool Sprite::IsOpen() const {
 
 void Sprite::Update(const float dt) {}
 
-bool Sprite::Is(const std::string& type) {
+bool Sprite::Is(const std::string& type) const {
     return(type == "Sprite");
 }

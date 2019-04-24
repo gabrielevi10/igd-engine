@@ -9,6 +9,7 @@
 #include "TileSet.h"
 #include "InputManager.h"
 #include "Camera.h"
+#include "CameraFollower.h"
 
 #define PI 3.14159265359
 
@@ -17,11 +18,13 @@ State::State() : quitRequested(false) {
     GameObject* go1 = new GameObject();
 
     go->AddComponent(std::shared_ptr<Component>(new Sprite(*go, "assets/img/ocean.jpg")));
+    go->AddComponent(std::shared_ptr<Component>(new CameraFollower(*go)));
     go->box.x = 0;
     go->box.y = 0;
+    objectArray.emplace_back(go);
+    
     music = new Music("assets/audio/stageState.ogg"); 
     music->Play();
-    objectArray.emplace_back(go);
     
     std::shared_ptr<TileSet> tileSet(new TileSet(64, 64, "assets/img/tileset.png"));
     std::shared_ptr<Component> tileMap(new TileMap(*go1, "assets/map/tileMap.txt", tileSet));

@@ -11,7 +11,7 @@ class Face : public Component {
         
         void Update(float dt);
         void Render();
-        bool Is(const std::string& type);
+        bool Is(const std::string& type) const;
 
     private:
         int hitpoints;

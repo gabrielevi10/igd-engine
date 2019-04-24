@@ -19,7 +19,7 @@ class Sound : public Component {
         
         void Update(const float dt);
         void Render();
-        bool Is(const std::string&);
+        bool Is(const std::string&) const;
 
     private:
         Mix_Chunk* chunk;

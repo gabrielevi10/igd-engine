@@ -74,6 +74,6 @@ void TileMap::Render() {
 
 void TileMap::Update(float dt) {}
 
-bool TileMap::Is(const std::string& type) {
+bool TileMap::Is(const std::string& type) const {
     return type == "TileMap";
 }

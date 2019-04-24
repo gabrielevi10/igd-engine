@@ -20,7 +20,7 @@ void Camera::Update(float dt) {
     InputManager& input = InputManager::GetInstance();
     
     if (focus != nullptr) {
-        pos = {512, 300}; 
+        pos = {0, 0}; 
     }
     else {
         if (input.IsKeyDown(UP_ARROW_KEY)) {
