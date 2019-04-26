@@ -11,6 +11,7 @@ class CameraFollower : public Component {
         void Update(float dt);
         void Render();
         bool Is(const std::string& type) const;
+        void Start();
 };
 
 #endif

@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "State.h"
-#include "Face.h"
 #include "Sound.h"
 #include "TileMap.h"
 #include "TileSet.h"
@@ -13,7 +12,7 @@
 
 #define PI 3.14159265359
 
-State::State() : quitRequested(false) {
+State::State() : quitRequested(false), started(false) {
     GameObject* go = new GameObject();
     GameObject* go1 = new GameObject();
 
@@ -42,6 +41,14 @@ State::~State() {
     objectArray.clear();
 }
 
+void State::Start() {
+    LoadAssets();
+    for (uint32_t i = 0; i < objectArray.size(); i++) {
+        objectArray[i]->Start();
+    }
+    started = true; 
+}
+
 void State::LoadAssets() {}
 
 void State::Update(float dt) {
@@ -54,7 +61,7 @@ void State::Update(float dt) {
         Vec2 aux = Vec2(200, 0);
         aux.Rotate(-PI + PI*(rand() % 1001)/500.0);
         Vec2 objPos = aux + Vec2(input.GetMouseX(), input.GetMouseY());
-        AddObject((int)objPos.x, (int)objPos.y);
+        // AddObject((int)objPos.x, (int)objPos.y);
     }
 
     Camera::Update(dt);
@@ -79,16 +86,27 @@ bool State::QuitRequested() const {
     return quitRequested;
 }
 
-void State::AddObject(int mouseX, int mouseY) {
-    GameObject* go = new GameObject();
-    Sprite* s = new Sprite(*go, "assets/img/penguinface.png");
+std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* go) const {
+    std::weak_ptr<GameObject> wkptr;
+    for (uint32_t i = 0; i < objectArray.size(); i++) {
+        if (go == objectArray[i].get()) {
+            wkptr = objectArray[i];
+            break;
+        }
+    }
+    return wkptr;
+}
 
-    go->AddComponent(std::shared_ptr<Component>(s));
-    go->box.x = mouseX - s->GetWidth()/2;
-    go->box.y = mouseY - s->GetHeight()/2;
-    go->box.h = s->GetHeight();
-    go->box.w = s->GetWidth();
-    go->AddComponent(std::shared_ptr<Component>(new Sound(*go, "assets/audio/boom.wav")));
-    go->AddComponent(std::shared_ptr<Component>(new Face(*go)));
-    objectArray.emplace_back(go);
+
+std::weak_ptr<GameObject> State::AddObject(GameObject* go) {
+    std::shared_ptr<GameObject> shrptr(go);
+    std::weak_ptr<GameObject> weakptr = shrptr;
+    
+    objectArray.push_back(shrptr);
+
+    if (started) {
+        go->Start();
+    }
+
+    return weakptr;
 }

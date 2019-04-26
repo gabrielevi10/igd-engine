@@ -24,6 +24,7 @@ class Sprite : public Component {
         void Render();
         void Render(float x, float y);
         bool Is(const std::string&) const;
+        void Start();
 
     private:
         SDL_Texture* texture;

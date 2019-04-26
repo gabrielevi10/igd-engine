@@ -22,12 +22,12 @@ class GameObject {
         void AddComponent(std::shared_ptr<Component>);
         void RemoveComponent(std::shared_ptr<Component>);
         std::shared_ptr<Component> GetComponent(const std::string& type);
-        
+        void Start();
         Rect box;
     
     private:
         std::vector<std::shared_ptr<Component>> components;
-        bool isDead;
+        bool isDead, started;
 };
 
 #endif

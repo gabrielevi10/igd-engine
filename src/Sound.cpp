@@ -39,3 +39,5 @@ void Sound::Render() {}
 bool Sound::Is(const std::string& type) const {
     return (type == "Sound");
 }
+
+void Sound::Start() {}
