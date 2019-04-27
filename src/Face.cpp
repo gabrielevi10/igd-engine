@@ -1,6 +1,7 @@
 #include "Face.h"
 #include "Sound.h"
 #include "InputManager.h"
+#include "Camera.h"
 
 #include <iostream>
 
@@ -18,7 +19,7 @@ void Face::Damage(int damage) {
 
 void Face::Update(float dt) {
     InputManager& input = InputManager::GetInstance();
-    if (input.MousePress(1) && associated.box.Contains({(float)input.GetMouseX(), (float)input.GetMouseY()})) {
+    if (input.MousePress(1) && associated.box.Contains({(float)input.GetMouseX() - Camera::pos.x, (float)input.GetMouseY() - Camera::pos.y})) {
         Damage(std::rand() % 10 + 10);
     }
 }
