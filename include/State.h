@@ -23,7 +23,7 @@ class State {
     private:
         void Input();
 
-        Music* music;
+        std::unique_ptr<Music> music;
         bool quitRequested, started;
         std::vector<std::shared_ptr<GameObject>> objectArray;
 };
