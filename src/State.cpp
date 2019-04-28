@@ -14,11 +14,13 @@
 #define PI 3.14159265359
 
 State::State() : quitRequested(false), started(false) {
+    LoadAssets();
+   
     GameObject* go = new GameObject();
     go->AddComponent(std::shared_ptr<Alien>(new Alien(*go, 10)));
-    go->box.x = 512;
-    go->box.y = 300;
-    objectArray.emplace_back(go);
+    go->box.x = 512 - go->box.x;
+    go->box.y = 300 - go->box.y;
+    AddObject(go);
 
     Camera::pos = {0, 0};
     Camera::speed = {0, 0};
@@ -29,7 +31,6 @@ State::~State() {
 }
 
 void State::Start() {
-    LoadAssets();
     for (uint32_t i = 0; i < objectArray.size(); i++) {
         objectArray[i]->Start();
     }
@@ -67,7 +68,7 @@ void State::Update(float dt) {
         Vec2 aux = Vec2(200, 0);
         aux.Rotate(-PI + PI*(rand() % 1001)/500.0);
         Vec2 objPos = aux + Vec2(input.GetMouseX(), input.GetMouseY());
-        // AddObject((int)objPos.x, (int)objPos.y);
+        // AddObject();
     }
 
     Camera::Update(dt);

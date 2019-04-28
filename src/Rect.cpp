@@ -30,7 +30,7 @@ Rect& Rect::operator=(const Rect& other) {
 }
 
 Vec2 Rect::Center() const {
-    return Vec2((x + w)/2.0, (y + h)/2.0);
+    return Vec2(x + w/2, y + h/2);
 }
 
 bool Rect::Contains(const Vec2& point) const {

@@ -5,17 +5,19 @@
 #define INCLUDE_SDL
 #include "SDL_include.h"
 
+#include <iostream>
+
 Alien::Alien(GameObject& associated, int nMinions) : 
     Component(associated), 
     speed({0, 0}), 
     hp(50), 
     taskQueue(), 
-    minionArray() {
+    minionArray(nMinions) {
     
     std::shared_ptr<Sprite> sprite(new Sprite(associated, "assets/img/alien.png"));
     associated.AddComponent(sprite);
-    associated.box.x = sprite->GetWidth();
-    associated.box.y = sprite->GetHeight();
+    associated.box.x = sprite->GetWidth()/2;
+    associated.box.y = sprite->GetHeight()/2;
 }
 
 Alien::~Alien() {
@@ -26,7 +28,10 @@ void Alien::Start() {}
 
 void Alien::Update(float dt) {
     InputManager& input = InputManager::GetInstance();
-    Vec2 center;            
+    Vec2 center;
+    double angle;
+    int dirx = 0, diry = 0;
+
     if (input.IsMouseDown(LEFT_MOUSE_BUTTON)) {
         taskQueue.push(Action(Action::ActionType::SHOOT, input.GetMouseX() - Camera::pos.x, input.GetMouseY() - Camera::pos.y));
     }
@@ -36,21 +41,26 @@ void Alien::Update(float dt) {
 
     if (!taskQueue.empty()) {
         Action action = taskQueue.front();
+
         if (action.type == Action::ActionType::MOVE) {
             center = associated.box.Center();
-            speed.x = dt*50;
-            speed.y = dt*50;
-            if (abs(center.x - action.pos.x) < speed.x || abs(center.y - action.pos.y) < speed.y) {
+            angle = atan2((action.pos.y - center.y), (action.pos.x - center.x));
+            speed.x = dt*100 * cos(angle);
+            speed.y = dt*100 * sin(angle);
+            if (sqrt(pow(action.pos.x - center.x, 2) + pow(action.pos.y - center.y, 2)) > dt*100) {
                 associated.box.x += speed.x;
-                associated.box.y += speed.y; 
+                associated.box.y += speed.y;
             }
             else {
+                // associated.box.x = action.pos.x - associated.box.w/2;
+                // associated.box.y = action.pos.y - associated.box.h/2; 
                 taskQueue.pop();
             }
         }
         else if (action.type == Action::ActionType::SHOOT) {
             taskQueue.pop();
         }
+
     }
 }
 
