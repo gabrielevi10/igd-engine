@@ -4,15 +4,20 @@
 #include "InputManager.h"
 #define INCLUDE_SDL
 #include "SDL_include.h"
+#include "State.h"
+#include "Game.h"
+#include "Minion.h"
 
 #include <iostream>
+
+#define PI 3.14159265359
 
 Alien::Alien(GameObject& associated, int nMinions) : 
     Component(associated), 
     speed({0, 0}), 
-    hp(50), 
-    taskQueue(), 
-    minionArray(nMinions) {
+    hp(50),
+    nMinions(nMinions), 
+    taskQueue() {
     
     std::shared_ptr<Sprite> sprite(new Sprite(associated, "assets/img/alien.png"));
     associated.AddComponent(sprite);
@@ -20,13 +25,13 @@ Alien::Alien(GameObject& associated, int nMinions) :
     associated.box.y = sprite->GetHeight()/2;
     associated.box.w = sprite->GetWidth();
     associated.box.h = sprite->GetHeight();
+
+    srand(time(NULL));
 }
 
 Alien::~Alien() {
     minionArray.clear();
 }
-
-void Alien::Start() {}
 
 void Alien::Update(float dt) {
     InputManager& input = InputManager::GetInstance();
@@ -60,7 +65,10 @@ void Alien::Update(float dt) {
             }
         }
         else if (action.type == Action::ActionType::SHOOT) {
-            taskQueue.pop();
+            int random = rand() % nMinions;
+            // State
+            std::shared_ptr<Minion> minion = std::dynamic_pointer_cast<Minion>(minionArray[random].lock()->GetComponent("Minion"));
+            minion->Shoot(action.pos);
         }
 
     }
@@ -70,6 +78,18 @@ void Alien::Render() {}
 
 bool Alien::Is(const std::string& type) const {
     return (type == "Alien");
+}
+
+void Alien::Start() {
+    State* state = &Game::GetInstance().GetState();
+    
+    for (int i = 0; i < nMinions; i++) {
+        GameObject* go = new GameObject;
+        std::shared_ptr<Minion> minion(new Minion(*go, state->GetObjectPtr(&associated), float(i*2*PI)/nMinions));
+        go->AddComponent(minion);
+        minionArray.push_back(state->AddObject(go));
+    }
+
 }
 
 Alien::Action::Action(ActionType type, float x, float y) : 

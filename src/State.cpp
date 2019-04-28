@@ -17,7 +17,7 @@ State::State() : quitRequested(false), started(false) {
     LoadAssets();
    
     GameObject* go = new GameObject();
-    go->AddComponent(std::shared_ptr<Alien>(new Alien(*go, 10)));
+    go->AddComponent(std::shared_ptr<Alien>(new Alien(*go, 5)));
     go->box.x = 512 - go->box.x;
     go->box.y = 300 - go->box.y;
     AddObject(go);
@@ -103,7 +103,6 @@ std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* go) const {
     }
     return wkptr;
 }
-
 
 std::weak_ptr<GameObject> State::AddObject(GameObject* go) {
     std::shared_ptr<GameObject> shrptr(go);
