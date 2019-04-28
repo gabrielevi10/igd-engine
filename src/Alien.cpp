@@ -18,6 +18,8 @@ Alien::Alien(GameObject& associated, int nMinions) :
     associated.AddComponent(sprite);
     associated.box.x = sprite->GetWidth()/2;
     associated.box.y = sprite->GetHeight()/2;
+    associated.box.w = sprite->GetWidth();
+    associated.box.h = sprite->GetHeight();
 }
 
 Alien::~Alien() {
@@ -44,7 +46,7 @@ void Alien::Update(float dt) {
 
         if (action.type == Action::ActionType::MOVE) {
             center = associated.box.Center();
-            angle = atan2((action.pos.y - center.y), (action.pos.x - center.x));
+            angle = atan2(action.pos.y - center.y, action.pos.x - center.x);
             speed.x = dt*100 * cos(angle);
             speed.y = dt*100 * sin(angle);
             if (sqrt(pow(action.pos.x - center.x, 2) + pow(action.pos.y - center.y, 2)) > dt*100) {
@@ -52,8 +54,8 @@ void Alien::Update(float dt) {
                 associated.box.y += speed.y;
             }
             else {
-                // associated.box.x = action.pos.x - associated.box.w/2;
-                // associated.box.y = action.pos.y - associated.box.h/2; 
+                associated.box.x = action.pos.x - associated.box.w/2;
+                associated.box.y = action.pos.y - associated.box.h/2; 
                 taskQueue.pop();
             }
         }
