@@ -37,7 +37,7 @@ void Alien::Update(float dt) {
     InputManager& input = InputManager::GetInstance();
     Vec2 center;
     double angle;
-    int dirx = 0, diry = 0;
+    int random;
 
     if (input.IsMouseDown(LEFT_MOUSE_BUTTON)) {
         taskQueue.push(Action(Action::ActionType::SHOOT, input.GetMouseX() - Camera::pos.x, input.GetMouseY() - Camera::pos.y));
@@ -65,9 +65,10 @@ void Alien::Update(float dt) {
             }
         }
         else if (action.type == Action::ActionType::SHOOT) {
-            int random = rand() % nMinions;
+            random = rand() % nMinions;
 
-            std::shared_ptr<Minion> minion = std::dynamic_pointer_cast<Minion>(minionArray[random].lock()->GetComponent("Minion"));
+            std::shared_ptr<Component> aux = minionArray[random].lock()->GetComponent("Minion");
+            std::shared_ptr<Minion> minion = std::dynamic_pointer_cast<Minion>(aux);
             minion->Shoot(action.pos);
             
             taskQueue.pop();

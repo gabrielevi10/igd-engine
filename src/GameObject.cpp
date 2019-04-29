@@ -1,7 +1,9 @@
 #include <iostream>
 #include "GameObject.h"
 
-GameObject::GameObject() : isDead(false), started(false) {}
+GameObject::GameObject() : 
+    isDead(false), 
+    started(false) {}
 
 GameObject::~GameObject() {
     components.clear();

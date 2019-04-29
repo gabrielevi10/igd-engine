@@ -19,6 +19,10 @@ class Sprite : public Component {
         int GetWidth() const;
         int GetHeight() const;
         bool IsOpen() const;
+        void SetScale(float scaleX, float scaleY);
+        Vec2 GetScale() const;
+        void SetAngle(double angle);
+        double GetAngle() const;
         
         void Update(const float dt);
         void Render();
@@ -28,9 +32,10 @@ class Sprite : public Component {
 
     private:
         SDL_Texture* texture;
-        int width;
-        int height;
+        int width, height;
+        double angle;
         SDL_Rect clipRect;
+        Vec2 scale;
 }; 
 
 #endif
