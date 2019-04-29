@@ -43,17 +43,19 @@ bool Minion::Is(const std::string& type) const {
 
 void Minion::Start() {}
 
+#include <iostream>
+
 void Minion::Shoot(Vec2 target) {
     State* state = &Game::GetInstance().GetState();
-    GameObject* go;
+    GameObject* go = new GameObject();
     Vec2 center = associated.box.Center();
     auto dst = sqrt(pow(target.x - center.x, 2) + pow(target.y - center.y, 2));
 
     go->box.x = center.x - go->box.w/2;
     go->box.y = center.y - go->box.h/2;
 
-    float angle = atan2(center.x - target.x, center.y - target.y);
-    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, dst*2, "assets/img/minionbullet1.png"));
+    float angle = atan2(target.y - center.y, target.x - center.x);
+    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 500, 10, dst*2, "assets/img/minionbullet1.png"));
     go->AddComponent(bullet);
     state->AddObject(go);
 }

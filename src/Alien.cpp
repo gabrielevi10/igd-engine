@@ -66,9 +66,11 @@ void Alien::Update(float dt) {
         }
         else if (action.type == Action::ActionType::SHOOT) {
             int random = rand() % nMinions;
-            // State
+
             std::shared_ptr<Minion> minion = std::dynamic_pointer_cast<Minion>(minionArray[random].lock()->GetComponent("Minion"));
             minion->Shoot(action.pos);
+            
+            taskQueue.pop();
         }
 
     }
