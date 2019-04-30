@@ -19,7 +19,8 @@ void Face::Damage(int damage) {
 
 void Face::Update(float dt) {
     InputManager& input = InputManager::GetInstance();
-    if (input.MousePress(1) && associated.box.Contains({(float)input.GetMouseX() - Camera::pos.x, (float)input.GetMouseY() - Camera::pos.y})) {
+    Vec2 click = {(float)input.GetMouseX() - Camera::pos.x, (float)input.GetMouseY() - Camera::pos.y};
+    if (input.MousePress(1) && associated.box.Contains(click)) {
         Damage(std::rand() % 10 + 10);
     }
 }
