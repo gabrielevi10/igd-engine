@@ -54,7 +54,7 @@ void State::Update(float dt) {
         Vec2 aux = Vec2(200, 0);
         aux.Rotate(-PI + PI*(rand() % 1001)/500.0);
         Vec2 objPos = aux + Vec2(input.GetMouseX(), input.GetMouseY());
-        AddObject((int)objPos.x, (int)objPos.y);
+        AddObject((int)objPos.x - Camera::pos.x, (int)objPos.y - Camera::pos.y);
     }
 
     Camera::Update(dt);
