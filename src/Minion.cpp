@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Minion.h"
 #include "Sprite.h"
 #include "Bullet.h"
@@ -10,17 +11,21 @@ Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, do
     Component(associated),
     alienCenter(alienCenter),
     arc(arcOffsetDeg) {
+    
+    int random = rand() % 5;
+    random += 11;
+    double drandom = (double)random/10.0;
 
     std::shared_ptr<Sprite> sprite(new Sprite(associated, "assets/img/minion.png"));
-    associated.AddComponent(sprite);
-    associated.box.w = sprite->GetWidth();
-    associated.box.h = sprite->GetHeight();          
+    sprite->SetScale(drandom, drandom);
+    associated.AddComponent(sprite);          
 }
 
 void Minion::Update(float dt) {
     Vec2 center, pos;
     Vec2 dst = {200, 0};
     arc = arc + dt * PI/4.0;
+    associated.angleDeg = arc*180/PI;
 
     dst.Rotate(arc);
     std::shared_ptr<GameObject> alien = alienCenter.lock();
@@ -57,5 +62,6 @@ void Minion::Shoot(Vec2 target) {
     float angle = atan2(target.y - center.y, target.x - center.x);
     std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 500, 10, dst*2, "assets/img/minionbullet1.png"));
     go->AddComponent(bullet);
+    go->angleDeg = angle*180/PI;
     state->AddObject(go);
 }

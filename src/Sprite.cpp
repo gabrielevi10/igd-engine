@@ -10,13 +10,13 @@ Sprite::Sprite(GameObject& associated) :
     Component(associated), 
     texture(nullptr),
     scale({1, 1}),
-    angle(0) {}
+    angle(associated.angleDeg) {}
 
 Sprite::Sprite(GameObject& associated, const std::string& file) : 
     Component(associated), 
     texture(nullptr),
     scale({1, 1}),
-    angle(0) {
+    angle(associated.angleDeg) {
     
     Open(file);
 }
@@ -32,7 +32,8 @@ void Sprite::Open(const std::string& file) {
     if (code != 0) {
         throw std::runtime_error("Sprite SDL_QueryTexture failed: " + std::string(SDL_GetError()));
     }
-    
+    associated.box.w = GetWidth();
+    associated.box.h = GetHeight();
     SetClip(0, 0, width, height); 
 }
 
@@ -56,7 +57,9 @@ void Sprite::Render(float x, float y) {
     dstrect.w = clipRect.w * scale.x;
     dstrect.h = clipRect.h * scale.y;
 
-    returned_code = SDL_RenderCopy(Game::GetInstance().GetRenderer(), texture, &clipRect, &dstrect);
+    angle = associated.angleDeg;
+
+    returned_code = SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &dstrect, angle, nullptr, SDL_FLIP_NONE);
     if (returned_code != 0) {
         throw std::runtime_error("Sprite Render() failed: " + std::string(SDL_GetError()));
     }

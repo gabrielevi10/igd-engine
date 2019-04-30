@@ -23,10 +23,6 @@ Alien::Alien(GameObject& associated, int nMinions) :
     associated.AddComponent(sprite);
     associated.box.x = sprite->GetWidth()/2;
     associated.box.y = sprite->GetHeight()/2;
-    associated.box.w = sprite->GetWidth();
-    associated.box.h = sprite->GetHeight();
-
-    srand(time(NULL));
 }
 
 Alien::~Alien() {
@@ -36,9 +32,11 @@ Alien::~Alien() {
 void Alien::Update(float dt) {
     InputManager& input = InputManager::GetInstance();
     Vec2 center;
-    double angle;
-    int random;
+    double angle, distance = 99999.9;
+    int random, index;
+    std::shared_ptr<Minion> minion;
 
+    associated.angleDeg += -1;
     if (input.IsMouseDown(LEFT_MOUSE_BUTTON)) {
         taskQueue.push(Action(Action::ActionType::SHOOT, input.GetMouseX() - Camera::pos.x, input.GetMouseY() - Camera::pos.y));
     }
@@ -65,10 +63,18 @@ void Alien::Update(float dt) {
             }
         }
         else if (action.type == Action::ActionType::SHOOT) {
-            random = rand() % nMinions;
 
-            std::shared_ptr<Component> aux = minionArray[random].lock()->GetComponent("Minion");
-            std::shared_ptr<Minion> minion = std::dynamic_pointer_cast<Minion>(aux);
+            for (int i = 0; i < nMinions; i++) {
+                std::shared_ptr<GameObject> minionGo = minionArray[i].lock();
+                double aux = sqrt(pow(action.pos.x - minionGo->box.x, 2) + pow(action.pos.y - minionGo->box.y, 2));    
+                if (distance > aux) {
+                    distance = aux;
+                    index = i;
+                }
+            }
+
+            std::shared_ptr<Component> aux = minionArray[index].lock()->GetComponent("Minion");
+            minion = std::dynamic_pointer_cast<Minion>(aux);
             minion->Shoot(action.pos);
             
             taskQueue.pop();

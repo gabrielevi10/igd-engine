@@ -23,7 +23,9 @@ class GameObject {
         void RemoveComponent(std::shared_ptr<Component>);
         std::shared_ptr<Component> GetComponent(const std::string& type);
         void Start();
+        
         Rect box;
+        double angleDeg;
     
     private:
         std::vector<std::shared_ptr<Component>> components;

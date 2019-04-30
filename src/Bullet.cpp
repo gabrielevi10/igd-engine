@@ -10,8 +10,6 @@ Bullet::Bullet(GameObject& associated, float angle, float speed, int damage, flo
     damage(damage) {
     
     std::shared_ptr<Sprite> s(new Sprite(associated, file));
-    associated.box.h = s->GetHeight();
-    associated.box.w = s->GetWidth();
     associated.AddComponent(s);
 }
 
