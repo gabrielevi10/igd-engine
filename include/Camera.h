@@ -8,7 +8,7 @@ class Camera {
     public:
         static void Follow(GameObject* newFocus);
         static void Unfollow();
-        static void Update(float dt);
+        static void Update(double dt);
 
         static Vec2 speed, pos;
     private:

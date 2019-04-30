@@ -21,7 +21,7 @@ Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, do
     associated.AddComponent(sprite);          
 }
 
-void Minion::Update(float dt) {
+void Minion::Update(double dt) {
     Vec2 center, pos;
     Vec2 dst = {200, 0};
     arc = arc + dt * PI/4.0;
@@ -59,7 +59,7 @@ void Minion::Shoot(Vec2 target) {
     go->box.x = center.x - go->box.w/2;
     go->box.y = center.y - go->box.h/2;
 
-    float angle = atan2(target.y - center.y, target.x - center.x);
+    double angle = atan2(target.y - center.y, target.x - center.x);
     std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 500, 10, dst*2, "assets/img/minionbullet1.png"));
     go->AddComponent(bullet);
     go->angleDeg = angle*180/PI;

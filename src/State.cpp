@@ -58,7 +58,7 @@ void State::LoadAssets() {
     objectArray.emplace_back(go1);
 }
 
-void State::Update(float dt) {
+void State::Update(double dt) {
     InputManager& input = InputManager::GetInstance(); 
     
     if (input.QuitRequested() || input.KeyPress(ESCAPE_KEY)) {
@@ -67,7 +67,7 @@ void State::Update(float dt) {
     if (input.KeyPress(SPACE_KEY)) {
         Vec2 aux = Vec2(200, 0);
         aux.Rotate(-PI + PI*(rand() % 1001)/500.0);
-        Vec2 objPos = aux + Vec2(input.GetMouseX(), input.GetMouseY());
+        // Vec2 objPos = aux + Vec2(input.GetMouseX(), input.GetMouseY());
         // AddObject();
     }
 

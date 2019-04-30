@@ -2,7 +2,7 @@
 
 Rect::Rect() : x(0), y(0), w(0), h(0) {}
 
-Rect::Rect(const float& rx, const float& ry, const float& rw, const float& rh) :
+Rect::Rect(double rx, double ry, double rw, double rh) :
     x(rx), y(ry), w(rw), h(rh) {}
 
 Rect Rect::operator+(const Vec2& vec) const {
@@ -17,7 +17,7 @@ Rect Rect::operator-(const Rect& other) const {
     return Rect(x - other.x, y - other.y, w - other.w, h - other.h);
 }
 
-Rect Rect::operator*(const float& scalar) const {
+Rect Rect::operator*(double scalar) const {
     return Rect(x * scalar, y * scalar, w * scalar, h * scalar);
 }
 

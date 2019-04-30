@@ -5,7 +5,7 @@
 
 Vec2::Vec2() : x(0), y(0) {}
 
-Vec2::Vec2(float x1, float y1) : x(x1), y(y1) {}
+Vec2::Vec2(double x1, double y1) : x(x1), y(y1) {}
 
 Vec2 Vec2::operator+(const Vec2& other) const {
     return Vec2(x + other.x, y + other.y);
@@ -21,7 +21,7 @@ Vec2& Vec2::operator=(const Vec2& other) {
     return *this;
 }
 
-Vec2 Vec2::operator*(const float& scalar) const {
+Vec2 Vec2::operator*(double scalar) const {
     return Vec2(x*scalar, y*scalar);
 }
 
@@ -45,9 +45,9 @@ double Vec2::Inclination() const {
     return atan2(x, y);
 }
 
-void Vec2::Rotate(const float& angle) {
-    float px = x * cos(angle) - y * sin(angle);
-    float py = x * sin(angle) + y * cos(angle);
+void Vec2::Rotate(double angle) {
+    double px = x * cos(angle) - y * sin(angle);
+    double py = x * sin(angle) + y * cos(angle);
     x = px;
     y = py;
 }

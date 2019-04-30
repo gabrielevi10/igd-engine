@@ -14,7 +14,7 @@ class State {
 
         bool QuitRequested() const;
         void LoadAssets();
-        void Update(float dt);
+        void Update(double dt);
         void Render();
         void Start();
         std::weak_ptr<GameObject> AddObject(GameObject* go);

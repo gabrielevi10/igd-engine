@@ -17,7 +17,7 @@ void GameObject::Start() {
     started = true;
 }
 
-void GameObject::Update(const float& dt) {
+void GameObject::Update(double dt) {
     for (uint32_t i = 0; i < components.size(); i++) {
         components[i]->Update(dt);
     }

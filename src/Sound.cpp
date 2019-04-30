@@ -32,7 +32,7 @@ void Sound::Open(const std::string& file) {
     chunk = Resources::GetSound(file);
 }
 
-void Sound::Update(const float dt) {}
+void Sound::Update(const double dt) {}
 
 void Sound::Render() {}
 

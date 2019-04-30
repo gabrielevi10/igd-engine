@@ -14,7 +14,7 @@ class Alien : public Component {
         ~Alien();
 
         void Start();
-        void Update(float dt);
+        void Update(double dt);
         void Render();
         bool Is(const std::string& type) const;
     
@@ -22,7 +22,7 @@ class Alien : public Component {
         class Action {
             public:
                 typedef enum ActionType {MOVE, SHOOT} ActionType;
-                Action(ActionType type, float x, float y);
+                Action(ActionType type, double x, double y);
 
                 ActionType type;
                 Vec2 pos;

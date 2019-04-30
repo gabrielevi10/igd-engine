@@ -29,7 +29,7 @@ Alien::~Alien() {
     minionArray.clear();
 }
 
-void Alien::Update(float dt) {
+void Alien::Update(double dt) {
     InputManager& input = InputManager::GetInstance();
     Vec2 center;
     double angle, distance = 99999.9;
@@ -94,13 +94,13 @@ void Alien::Start() {
     
     for (int i = 0; i < nMinions; i++) {
         GameObject* go = new GameObject;
-        std::shared_ptr<Minion> minion(new Minion(*go, state->GetObjectPtr(&associated), float(i*2*PI)/nMinions));
+        std::shared_ptr<Minion> minion(new Minion(*go, state->GetObjectPtr(&associated), double(i*2*PI)/nMinions));
         go->AddComponent(minion);
         minionArray.push_back(state->AddObject(go));
     }
 
 }
 
-Alien::Action::Action(ActionType type, float x, float y) : 
+Alien::Action::Action(ActionType type, double x, double y) : 
     type(type),
     pos(x, y) {}

@@ -6,18 +6,18 @@
 class Rect {
     public:
         Rect();
-        Rect(const float&, const float&, const float&, const float&);
+        Rect(double, double, double, double);
         
         Rect operator+(const Vec2&) const;
         Rect operator+(const Rect&) const;
         Rect operator-(const Rect&) const;
-        Rect operator*(const float&) const;
+        Rect operator*(double) const;
         Rect& operator=(const Rect&);
 
         Vec2 Center() const;
         bool Contains(const Vec2&) const;
 
-        float x, y, w, h;
+        double x, y, w, h;
 
 };
 

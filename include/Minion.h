@@ -11,7 +11,7 @@ class Minion : public Component {
     public:
         Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, double arcOffSetDeg = 0);
 
-        void Update(float dt);
+        void Update(double dt);
         void Render();
         bool Is(const std::string& type) const;
         void Start();

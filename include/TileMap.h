@@ -18,7 +18,7 @@ class TileMap : public Component {
         int GetDepth() const;
 
         void Render();
-        void Update(float dt);
+        void Update(double dt);
         bool Is(const std::string& type) const;
         void Start();
 

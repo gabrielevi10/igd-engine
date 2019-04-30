@@ -48,7 +48,7 @@ void Sprite::Render() {
     Render(associated.box.x, associated.box.y);
 }
 
-void Sprite::Render(float x, float y) {
+void Sprite::Render(double x, double y) {
     SDL_Rect dstrect;
     int returned_code;
 
@@ -73,7 +73,7 @@ int Sprite::GetHeight() const {
     return height * (int)scale.y;
 }
 
-void Sprite::SetScale(float scaleX, float scaleY) {
+void Sprite::SetScale(double scaleX, double scaleY) {
     if (scaleX > 0) 
         scale.x = scaleX;
     if (scaleY > 0) 
@@ -96,7 +96,7 @@ bool Sprite::IsOpen() const {
     return texture != nullptr;
 }
 
-void Sprite::Update(const float dt) {}
+void Sprite::Update(const double dt) {}
 
 bool Sprite::Is(const std::string& type) const {
     return(type == "Sprite");

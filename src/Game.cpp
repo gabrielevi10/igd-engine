@@ -83,14 +83,14 @@ SDL_Renderer* Game::GetRenderer() const {
     return renderer;
 }
 
-float Game::GetDeltaTime() const {
+double Game::GetDeltaTime() const {
     return dt;
 }
 
 void Game::CalculateDeltaTime() {
     uint32_t aux = frameStart;
     frameStart = SDL_GetTicks();   
-    dt = (float)(frameStart - aux)/1000;
+    dt = (double)(frameStart - aux)/1000;
 }
 
 void Game::Run() {

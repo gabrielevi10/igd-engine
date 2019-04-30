@@ -15,7 +15,7 @@ class GameObject {
         GameObject();
         ~GameObject();
 
-        void Update(const float& dt);
+        void Update(double dt);
         void Render();
         bool IsDead() const;
         void RequestDelete();
