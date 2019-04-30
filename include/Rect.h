@@ -18,7 +18,6 @@ class Rect {
         bool Contains(const Vec2&) const;
 
         float x, y, w, h;
-
 };
 
 #endif

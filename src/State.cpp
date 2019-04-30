@@ -54,7 +54,7 @@ void State::Update(float dt) {
         Vec2 aux = Vec2(200, 0);
         aux.Rotate(-PI + PI*(rand() % 1001)/500.0);
         Vec2 objPos = aux + Vec2(input.GetMouseX(), input.GetMouseY());
-        AddObject((int)objPos.x - Camera::pos.x, (int)objPos.y - Camera::pos.y);
+        AddObject((int)objPos.x, (int)objPos.y);
     }
 
     Camera::Update(dt);
@@ -84,8 +84,8 @@ void State::AddObject(int mouseX, int mouseY) {
     Sprite* s = new Sprite(*go, "assets/img/penguinface.png");
 
     go->AddComponent(std::shared_ptr<Component>(s));
-    go->box.x = mouseX - s->GetWidth()/2;
-    go->box.y = mouseY - s->GetHeight()/2;
+    go->box.x = mouseX - Camera::pos.x - s->GetWidth()/2;
+    go->box.y = mouseY - Camera::pos.y - s->GetHeight()/2;
     go->box.h = s->GetHeight();
     go->box.w = s->GetWidth();
     go->AddComponent(std::shared_ptr<Component>(new Sound(*go, "assets/audio/boom.wav")));

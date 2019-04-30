@@ -2,6 +2,7 @@
 #include "Sound.h"
 #include "Camera.h"
 #include "InputManager.h"
+#include "Camera.h"
 
 #include <iostream>
 
