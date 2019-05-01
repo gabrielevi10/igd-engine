@@ -17,10 +17,11 @@ class Sound : public Component {
         void Open(const std::string&);
         bool IsOpen() const;
         
-        void Update(const float dt);
+        void Update(double dt);
         void Render();
         bool Is(const std::string&) const;
-
+        void Start();
+        
     private:
         Mix_Chunk* chunk;
         int channel;

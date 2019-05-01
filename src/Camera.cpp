@@ -16,7 +16,7 @@ void Camera::Unfollow() {
     focus = nullptr;
 }
 
-void Camera::Update(float dt) {
+void Camera::Update(double dt) {
     InputManager& input = InputManager::GetInstance();
     
     if (focus != nullptr) {

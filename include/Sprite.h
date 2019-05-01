@@ -19,17 +19,23 @@ class Sprite : public Component {
         int GetWidth() const;
         int GetHeight() const;
         bool IsOpen() const;
+        void SetScale(double scaleX, double scaleY);
+        Vec2 GetScale() const;
+        void SetAngle(double angle);
+        double GetAngle() const;
         
-        void Update(const float dt);
+        void Update(const double dt);
         void Render();
-        void Render(float x, float y);
+        void Render(double x, double y);
         bool Is(const std::string&) const;
+        void Start();
 
     private:
         SDL_Texture* texture;
-        int width;
-        int height;
+        int width, height;
+        double angle;
         SDL_Rect clipRect;
+        Vec2 scale;
 }; 
 
 #endif

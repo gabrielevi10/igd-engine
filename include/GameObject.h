@@ -15,19 +15,21 @@ class GameObject {
         GameObject();
         ~GameObject();
 
-        void Update(const float& dt);
+        void Update(double dt);
         void Render();
         bool IsDead() const;
         void RequestDelete();
         void AddComponent(std::shared_ptr<Component>);
         void RemoveComponent(std::shared_ptr<Component>);
         std::shared_ptr<Component> GetComponent(const std::string& type);
+        void Start();
         
         Rect box;
+        double angleDeg;
     
     private:
         std::vector<std::shared_ptr<Component>> components;
-        bool isDead;
+        bool isDead, started;
 };
 
 #endif

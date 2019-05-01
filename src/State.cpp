@@ -3,17 +3,41 @@
 #include <iostream>
 
 #include "State.h"
-#include "Face.h"
 #include "Sound.h"
 #include "TileMap.h"
 #include "TileSet.h"
 #include "InputManager.h"
 #include "Camera.h"
 #include "CameraFollower.h"
+#include "Alien.h"
 
 #define PI 3.14159265359
 
-State::State() : quitRequested(false) {
+State::State() : quitRequested(false), started(false) {
+    LoadAssets();
+   
+    GameObject* go = new GameObject();
+    go->AddComponent(std::shared_ptr<Alien>(new Alien(*go, 5)));
+    go->box.x = 512 - go->box.x;
+    go->box.y = 300 - go->box.y;
+    AddObject(go);
+
+    Camera::pos = {0, 0};
+    Camera::speed = {0, 0};
+}
+
+State::~State() {
+    objectArray.clear();
+}
+
+void State::Start() {
+    for (uint32_t i = 0; i < objectArray.size(); i++) {
+        objectArray[i]->Start();
+    }
+    started = true; 
+}
+
+void State::LoadAssets() {
     GameObject* go = new GameObject();
     GameObject* go1 = new GameObject();
 
@@ -23,7 +47,7 @@ State::State() : quitRequested(false) {
     go->box.y = 0;
     objectArray.emplace_back(go);
     
-    music = new Music("assets/audio/stageState.ogg"); 
+    music = std::unique_ptr<Music>(new Music("assets/audio/stageState.ogg")); 
     music->Play();
     
     std::shared_ptr<TileSet> tileSet(new TileSet(64, 64, "assets/img/tileset.png"));
@@ -32,19 +56,9 @@ State::State() : quitRequested(false) {
     go1->box.x = 0;
     go1->box.y = 0;
     objectArray.emplace_back(go1);
-
-    Camera::pos = {0, 0};
-    Camera::speed = {0, 0};
 }
 
-State::~State() {
-    delete music;
-    objectArray.clear();
-}
-
-void State::LoadAssets() {}
-
-void State::Update(float dt) {
+void State::Update(double dt) {
     InputManager& input = InputManager::GetInstance(); 
     
     if (input.QuitRequested() || input.KeyPress(ESCAPE_KEY)) {
@@ -53,8 +67,8 @@ void State::Update(float dt) {
     if (input.KeyPress(SPACE_KEY)) {
         Vec2 aux = Vec2(200, 0);
         aux.Rotate(-PI + PI*(rand() % 1001)/500.0);
-        Vec2 objPos = aux + Vec2(input.GetMouseX(), input.GetMouseY());
-        AddObject((int)objPos.x, (int)objPos.y);
+        // Vec2 objPos = aux + Vec2(input.GetMouseX(), input.GetMouseY());
+        // AddObject();
     }
 
     Camera::Update(dt);
@@ -79,16 +93,26 @@ bool State::QuitRequested() const {
     return quitRequested;
 }
 
-void State::AddObject(int mouseX, int mouseY) {
-    GameObject* go = new GameObject();
-    Sprite* s = new Sprite(*go, "assets/img/penguinface.png");
+std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* go) const {
+    std::weak_ptr<GameObject> wkptr = std::weak_ptr<GameObject>();
+    for (uint32_t i = 0; i < objectArray.size(); i++) {
+        if (go == objectArray[i].get()) {
+            wkptr = objectArray[i];
+            break;
+        }
+    }
+    return wkptr;
+}
 
-    go->AddComponent(std::shared_ptr<Component>(s));
-    go->box.x = mouseX - Camera::pos.x - s->GetWidth()/2;
-    go->box.y = mouseY - Camera::pos.y - s->GetHeight()/2;
-    go->box.h = s->GetHeight();
-    go->box.w = s->GetWidth();
-    go->AddComponent(std::shared_ptr<Component>(new Sound(*go, "assets/audio/boom.wav")));
-    go->AddComponent(std::shared_ptr<Component>(new Face(*go)));
-    objectArray.emplace_back(go);
+std::weak_ptr<GameObject> State::AddObject(GameObject* go) {
+    std::shared_ptr<GameObject> shrptr(go);
+    std::weak_ptr<GameObject> weakptr = shrptr;
+    
+    objectArray.push_back(shrptr);
+    
+    if (started) {
+        go->Start();
+    }
+
+    return weakptr;
 }

@@ -7,7 +7,7 @@ TileSet::TileSet(const int tileWidth, const int tileHeight, const std::string& f
     columns = tileSet.GetWidth()/tileWidth;
 }
 
-void TileSet::RenderTile(uint32_t index, float x, float y) {
+void TileSet::RenderTile(uint32_t index, double x, double y) {
     int cx, cy;
     if (index >= 0 && index < columns*rows - 1) {
         cx = index % columns;

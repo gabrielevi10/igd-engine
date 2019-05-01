@@ -17,7 +17,7 @@ class Game {
         SDL_Renderer* GetRenderer() const;
         State& GetState() const;
         static Game& GetInstance();
-        float GetDeltaTime() const;
+        double GetDeltaTime() const;
     
     private: // attributes
         void CalculateDeltaTime();
@@ -27,7 +27,7 @@ class Game {
         SDL_Renderer *renderer;
         State* state;
         uint32_t frameStart;
-        float dt;
+        double dt;
 };
 
 #endif
