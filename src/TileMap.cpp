@@ -67,9 +67,7 @@ int TileMap::GetDepth() const {
 }
 
 void TileMap::Render() {
-    for (int layer = 0; layer < mapDepth; layer++) {
-        RenderLayer(layer, Camera::pos.x, Camera::pos.y);
-    }
+    RenderLayer(0, Camera::pos.x, Camera::pos.y);
 }
 
 void TileMap::Update(double dt) {}

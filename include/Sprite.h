@@ -10,11 +10,11 @@
 
 class Sprite : public Component {
     public:
-        Sprite(GameObject&);
-        Sprite(GameObject&, const std::string&);
+        Sprite(GameObject& associated);
+        Sprite(GameObject& associated, const std::string& file, int frameCount = 1, double frameTime = 1);
         ~Sprite();
 
-        void Open(const std::string&);
+        void Open(const std::string& file);
         void SetClip(int x, int  y, int w, int h);
         int GetWidth() const;
         int GetHeight() const;
@@ -23,7 +23,10 @@ class Sprite : public Component {
         Vec2 GetScale() const;
         void SetAngle(double angle);
         double GetAngle() const;
-        
+        void SetFrame(int frame);
+        void SetFrameCount(int frameCount);
+        void SetFrameTime(double frameTime);
+
         void Update(const double dt);
         void Render();
         void Render(double x, double y);
@@ -32,10 +35,10 @@ class Sprite : public Component {
 
     private:
         SDL_Texture* texture;
-        int width, height;
-        double angle;
+        int width, height, frameCount, currentFrame;
+        double angle, timeElapsed, frameTime;
         SDL_Rect clipRect;
         Vec2 scale;
-}; 
+};
 
 #endif

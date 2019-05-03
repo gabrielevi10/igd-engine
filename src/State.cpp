@@ -10,6 +10,7 @@
 #include "Camera.h"
 #include "CameraFollower.h"
 #include "Alien.h"
+#include "PenguinBody.h"
 
 #define PI 3.14159265359
 
@@ -24,6 +25,12 @@ State::State() : quitRequested(false), started(false) {
 
     Camera::pos = {0, 0};
     Camera::speed = {0, 0};
+
+    GameObject* go1 = new GameObject();
+    go1->AddComponent(std::shared_ptr<PenguinBody>(new PenguinBody(*go1)));
+    go1->box.x = 0;
+    go1->box.y = 0;
+    AddObject(go1);
 }
 
 State::~State() {
@@ -84,8 +91,15 @@ void State::Update(double dt) {
 }
 
 void State::Render() {
+    std::shared_ptr<TileMap> tilemap = nullptr;
     for (uint32_t i = 0; i < objectArray.size(); i++) {
+        if (tilemap == nullptr) {
+            tilemap = std::dynamic_pointer_cast<TileMap>(objectArray[i]->GetComponent("TileMap"));
+        }
         objectArray[i]->Render();
+    }
+    if (tilemap != nullptr) {
+        tilemap->RenderLayer(1);
     }
 }
 
@@ -111,7 +125,7 @@ std::weak_ptr<GameObject> State::AddObject(GameObject* go) {
     objectArray.push_back(shrptr);
     
     if (started) {
-        go->Start();
+        shrptr->Start();
     }
 
     return weakptr;

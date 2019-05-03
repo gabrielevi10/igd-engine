@@ -37,10 +37,10 @@ void Alien::Update(double dt) {
     std::shared_ptr<Minion> minion;
 
     associated.angleDeg += -1;
-    if (input.IsMouseDown(LEFT_MOUSE_BUTTON)) {
+    if (input.MousePress(LEFT_MOUSE_BUTTON)) {
         taskQueue.push(Action(Action::ActionType::SHOOT, input.GetMouseX() - Camera::pos.x, input.GetMouseY() - Camera::pos.y));
     }
-    else if (input.IsMouseDown(RIGHT_MOUSE_BUTTON)) {
+    else if (input.MousePress(RIGHT_MOUSE_BUTTON)) {
         taskQueue.push(Action(Action::ActionType::MOVE, input.GetMouseX() - Camera::pos.x, input.GetMouseY() - Camera::pos.y));
     }
 

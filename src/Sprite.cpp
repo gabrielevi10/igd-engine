@@ -12,9 +12,12 @@ Sprite::Sprite(GameObject& associated) :
     scale({1, 1}),
     angle(associated.angleDeg) {}
 
-Sprite::Sprite(GameObject& associated, const std::string& file) : 
+Sprite::Sprite(GameObject& associated, const std::string& file, int frameCount, double frameTime) : 
     Component(associated), 
     texture(nullptr),
+    frameCount(frameCount),
+    currentFrame(0),
+    frameTime(frameTime),
     scale({1, 1}),
     angle(associated.angleDeg) {
     
@@ -34,7 +37,7 @@ void Sprite::Open(const std::string& file) {
     }
     associated.box.w = GetWidth();
     associated.box.h = GetHeight();
-    SetClip(0, 0, width, height); 
+    SetClip(0, 0, width / frameCount, height); 
 }
 
 void Sprite::SetClip(int x, int y, int w, int h) {
@@ -66,7 +69,7 @@ void Sprite::Render(double x, double y) {
 }
 
 int Sprite::GetWidth() const {
-    return width * (int)scale.x;
+    return (width * (int)scale.x) / frameCount;
 }
 
 int Sprite::GetHeight() const {
@@ -96,10 +99,36 @@ bool Sprite::IsOpen() const {
     return texture != nullptr;
 }
 
-void Sprite::Update(const double dt) {}
+void Sprite::Update(const double dt) {
+    int w, x = 0;
+    timeElapsed += dt;
+    if (timeElapsed > frameTime) {
+        currentFrame = (currentFrame + 1) % frameCount;
+        w = width / frameCount;
+        x = currentFrame * w;
+        SetClip(x, 0, w, height);
+    }
+}
 
 bool Sprite::Is(const std::string& type) const {
     return(type == "Sprite");
 }
 
 void Sprite::Start() {}
+
+void Sprite::SetFrame(int frame) {
+    currentFrame = frame;
+    int w = width / frameCount;
+    int x = currentFrame * w;
+    SetClip(x, 0, w, height);
+}
+
+void Sprite::SetFrameCount(int frameCount) {
+    this->frameCount = frameCount;
+    currentFrame = 0;
+    associated.box.w = GetWidth();
+}
+
+void Sprite::SetFrameTime(double frameTime) {
+    this->frameTime = frameTime;
+}
