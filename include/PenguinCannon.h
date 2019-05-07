@@ -13,6 +13,7 @@ class PenguinCannon : public Component {
         void Update(double dt);
         void Render();
         bool Is(const std::string& type) const;
+        void Start();
 
         void Shoot();
     

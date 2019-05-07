@@ -5,6 +5,8 @@
 #include "State.h"
 #include "Game.h"
 
+#define BULLET_IMG "assets/img/minionbullet2.png"
+#define MINION_IMG "assets/img/minion.png"
 #define PI 3.14159265359
 
 Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, double arcOffsetDeg) :
@@ -16,7 +18,7 @@ Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, do
     random += 11;
     double drandom = (double)random/10.0;
 
-    std::shared_ptr<Sprite> sprite(new Sprite(associated, "assets/img/minion.png"));
+    std::shared_ptr<Sprite> sprite(new Sprite(associated, MINION_IMG));
     sprite->SetScale(drandom, drandom);
     associated.AddComponent(sprite);          
 }
@@ -60,7 +62,7 @@ void Minion::Shoot(Vec2 target) {
     go->box.y = center.y - go->box.h/2;
 
     double angle = atan2(target.y - center.y, target.x - center.x);
-    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, dst*2, "assets/img/minionbullet2.png"));
+    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, dst*2, BULLET_IMG));
     go->AddComponent(bullet);
     go->angleDeg = angle*180/PI;
     state->AddObject(go);
