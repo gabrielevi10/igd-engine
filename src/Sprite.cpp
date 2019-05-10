@@ -19,6 +19,7 @@ Sprite::Sprite(GameObject& associated, const std::string& file, int frameCount, 
     currentFrame(0),
     frameTime(frameTime),
     scale({1, 1}),
+    timeElapsed(0),
     angle(associated.angleDeg) {
     
     Open(file);
@@ -101,8 +102,9 @@ bool Sprite::IsOpen() const {
 
 void Sprite::Update(const double dt) {
     int w, x = 0;
-    timeElapsed += dt;
+    timeElapsed += dt*100;
     if (timeElapsed > frameTime) {
+        timeElapsed = 0;
         currentFrame = (currentFrame + 1) % frameCount;
         w = width / frameCount;
         x = currentFrame * w;

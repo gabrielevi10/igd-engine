@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "Game.h"
 #include "State.h"
+#include "Helpers.h"
 #include "InputManager.h"
 #define SDL_ICLUDE
 #include "SDL_include.h"
@@ -46,28 +47,30 @@ void PenguinBody::Update(double dt) {
     speed = {0, 0};
     angle = associated.angleDeg;
     if (input.IsKeyDown(W_KEY)) {
-        if (speed.x < 300 && speed.y < 300) {
+        if (speed.x < 100 && speed.y < 100) {
+            angle = Helpers::ConvertToRadians(angle);
             speed.x += dt*100 * cos(angle);
             speed.y += dt*100 * sin(angle);
         }
         associated.box.x += speed.x;
         associated.box.y += speed.y;    
     }
-    else if (input.IsKeyDown(S_KEY)) {
-        if (speed.x > -300 && speed.y > -300) {
-            speed.x -= dt*100;
-            speed.y -= dt*100;
+    if (input.IsKeyDown(S_KEY)) {
+        if (speed.x > -100 && speed.y > -100) {
+            angle = Helpers::ConvertToRadians(angle);
+            speed.x -= dt*100 * cos(angle);
+            speed.y -= dt*100 * sin(angle);
         }
         associated.box.x += speed.x;
         associated.box.y += speed.y;
     }
-    else if (input.IsKeyDown(A_KEY)) {
-        angle = angle - dt/4;
-        associated.angleDeg = angle*180/PI; 
+    if (input.IsKeyDown(A_KEY)) {
+        angle = angle - dt*100;
+        associated.angleDeg = angle; 
     }
-    else if (input.IsKeyDown(D_KEY)) {
-        angle = angle + dt/4;
-        associated.angleDeg = angle*180/PI;
+    if (input.IsKeyDown(D_KEY)) {
+        angle = angle + dt*100;
+        associated.angleDeg = angle;
     }
     if (hp <= 0) {
         associated.RequestDelete();

@@ -7,6 +7,7 @@
 #include "State.h"
 #include "Game.h"
 #include "Minion.h"
+#include "Helpers.h"
 
 #include <iostream>
 
@@ -49,10 +50,10 @@ void Alien::Update(double dt) {
 
         if (action.type == Action::ActionType::MOVE) {
             center = associated.box.Center();
-            angle = atan2(action.pos.y - center.y, action.pos.x - center.x);
+            angle = Helpers::AngleBetweenTwoPoints(Vec2(center.x, center.y), Vec2(action.pos.x, action.pos.y));
             speed.x = dt*100 * cos(angle);
             speed.y = dt*100 * sin(angle);
-            if (sqrt(pow(action.pos.x - center.x, 2) + pow(action.pos.y - center.y, 2)) > dt*100) {
+            if (Helpers::EuclideanDistance(Vec2(action.pos.x, action.pos.y), Vec2(center.x, center.y)) > dt*100) {
                 associated.box.x += speed.x;
                 associated.box.y += speed.y;
             }
@@ -66,7 +67,7 @@ void Alien::Update(double dt) {
 
             for (int i = 0; i < nMinions; i++) {
                 std::shared_ptr<GameObject> minionGo = minionArray[i].lock();
-                double aux = sqrt(pow(action.pos.x - minionGo->box.x, 2) + pow(action.pos.y - minionGo->box.y, 2));    
+                double aux = Helpers::EuclideanDistance(Vec2(action.pos.x, action.pos.y), Vec2(minionGo->box.x, minionGo->box.y));   
                 if (distance > aux) {
                     distance = aux;
                     index = i;

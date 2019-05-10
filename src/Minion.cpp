@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "State.h"
 #include "Game.h"
+#include "Helpers.h"
 
 #define BULLET_IMG "assets/img/minionbullet2.png"
 #define MINION_IMG "assets/img/minion.png"
@@ -27,7 +28,7 @@ void Minion::Update(double dt) {
     Vec2 center, pos;
     Vec2 dst = {200, 0};
     arc = arc + dt * PI/4.0;
-    associated.angleDeg = arc*180/PI;
+    associated.angleDeg = Helpers::ConvertToDegree(arc);
 
     dst.Rotate(arc);
     std::shared_ptr<GameObject> alien = alienCenter.lock();
@@ -56,14 +57,15 @@ void Minion::Shoot(Vec2 target) {
     State* state = &Game::GetInstance().GetState();
     GameObject* go = new GameObject();
     Vec2 center = associated.box.Center();
-    auto dst = sqrt(pow(target.x - center.x, 2) + pow(target.y - center.y, 2));
+
+    double dst = Helpers::EuclideanDistance(Vec2(center.x, center.y), Vec2(target.x, target.y));
 
     go->box.x = center.x - go->box.w/2;
     go->box.y = center.y - go->box.h/2;
 
-    double angle = atan2(target.y - center.y, target.x - center.x);
+    double angle = Helpers::AngleBetweenTwoPoints(Vec2(center.x, center.y), Vec2(target.x, target.y));
     std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, dst*2, BULLET_IMG));
     go->AddComponent(bullet);
-    go->angleDeg = angle*180/PI;
+    go->angleDeg = Helpers::ConvertToDegree(angle);
     state->AddObject(go);
 }
