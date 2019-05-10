@@ -55,12 +55,12 @@ void Minion::Shoot(Vec2 target) {
     GameObject* go = new GameObject();
     Vec2 center = associated.box.Center();
     auto dst = sqrt(pow(target.x - center.x, 2) + pow(target.y - center.y, 2));
+    double angle = atan2(target.y - center.y, target.x - center.x);
+    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 200, 10, dst*2, "assets/img/minionbullet1.png"));
 
     go->box.x = center.x - go->box.w/2;
     go->box.y = center.y - go->box.h/2;
 
-    double angle = atan2(target.y - center.y, target.x - center.x);
-    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 500, 10, dst*2, "assets/img/minionbullet1.png"));
     go->AddComponent(bullet);
     go->angleDeg = angle*180/PI;
     state->AddObject(go);
