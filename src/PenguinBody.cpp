@@ -49,8 +49,8 @@ void PenguinBody::Update(double dt) {
     if (input.IsKeyDown(W_KEY)) {
         if (speed.x < 100 && speed.y < 100) {
             angle = Helpers::ConvertToRadians(angle);
-            speed.x += dt*100 * cos(angle);
-            speed.y += dt*100 * sin(angle);
+            speed.x += dt * cos(angle);
+            speed.y += dt * sin(angle);
         }
         associated.box.x += speed.x;
         associated.box.y += speed.y;    
