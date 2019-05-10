@@ -4,10 +4,12 @@
 #include "Game.h"
 #include "State.h"
 #include "InputManager.h"
+#include "Bullet.h"
 #include "Camera.h"
 #include "Helpers.h"
 
 #define GUN_IMG "assets/img/cubngun.png"
+#define BULLET_IMG "assets/img/penguinbullet.png"
 #define PI 3.14159265359
 
 PenguinCannon::PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> penguinBody) : 
@@ -23,7 +25,7 @@ void PenguinCannon::Update(double dt) {
     std::shared_ptr<GameObject> pbody = penguinBody.lock();
     InputManager& input = InputManager::GetInstance();
     Vec2 center, pbodyCenter;
-    double angle, mx, my;
+    double mx, my;
 
     if (pbody != nullptr) {
         pbodyCenter = pbody->box.Center();
@@ -38,6 +40,10 @@ void PenguinCannon::Update(double dt) {
         angle = Helpers::AngleBetweenTwoPoints(Vec2(center.x, center.y), Vec2(mx, my));
         
         associated.angleDeg = Helpers::ConvertToDegree(angle);
+        
+        if (input.MousePress(LEFT_MOUSE_BUTTON)) 
+            Shoot();
+
     }
     else {
         associated.RequestDelete();
@@ -50,8 +56,21 @@ bool PenguinCannon::Is(const std::string& type) const {
     return (type == "PenguinCannon");
 }
 
+#include <iostream>
+
 void PenguinCannon::Shoot() {
-    
+    State* state = &Game::GetInstance().GetState();
+    GameObject* go = new GameObject();
+    Vec2 center = associated.box.Center();
+
+    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, 5000, BULLET_IMG));
+
+    go->box.x = center.x - go->box.w/2;
+    go->box.y = center.y - go->box.h/2;
+
+    go->AddComponent(bullet);
+    go->angleDeg = Helpers::ConvertToDegree(angle);
+    state->AddObject(go);
 }
 
 void PenguinCannon::Start() {}

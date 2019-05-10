@@ -11,6 +11,7 @@
 
 #include <iostream>
 
+#define ALIEN_IMG "assets/img/alien.png"
 #define PI 3.14159265359
 
 Alien::Alien(GameObject& associated, int nMinions) : 
@@ -20,7 +21,7 @@ Alien::Alien(GameObject& associated, int nMinions) :
     nMinions(nMinions), 
     taskQueue() {
     
-    std::shared_ptr<Sprite> sprite(new Sprite(associated, "assets/img/alien.png"));
+    std::shared_ptr<Sprite> sprite(new Sprite(associated, ALIEN_IMG));
     associated.AddComponent(sprite);
     associated.box.x = sprite->GetWidth()/2;
     associated.box.y = sprite->GetHeight()/2;
@@ -39,7 +40,7 @@ void Alien::Update(double dt) {
 
     associated.angleDeg += -1;
     if (input.MousePress(LEFT_MOUSE_BUTTON)) {
-        taskQueue.push(Action(Action::ActionType::SHOOT, input.GetMouseX() - Camera::pos.x, input.GetMouseY() - Camera::pos.y));
+        // taskQueue.push(Action(Action::ActionType::SHOOT, input.GetMouseX() - Camera::pos.x, input.GetMouseY() - Camera::pos.y));
     }
     else if (input.MousePress(RIGHT_MOUSE_BUTTON)) {
         taskQueue.push(Action(Action::ActionType::MOVE, input.GetMouseX() - Camera::pos.x, input.GetMouseY() - Camera::pos.y));

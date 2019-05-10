@@ -59,12 +59,13 @@ void Minion::Shoot(Vec2 target) {
     Vec2 center = associated.box.Center();
 
     double dst = Helpers::EuclideanDistance(Vec2(center.x, center.y), Vec2(target.x, target.y));
+    double angle = Helpers::AngleBetweenTwoPoints(Vec2(center.x, center.y), Vec2(target.x, target.y));
+    
+    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, dst*2, BULLET_IMG));
 
     go->box.x = center.x - go->box.w/2;
     go->box.y = center.y - go->box.h/2;
 
-    double angle = Helpers::AngleBetweenTwoPoints(Vec2(center.x, center.y), Vec2(target.x, target.y));
-    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, dst*2, BULLET_IMG));
     go->AddComponent(bullet);
     go->angleDeg = Helpers::ConvertToDegree(angle);
     state->AddObject(go);

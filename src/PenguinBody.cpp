@@ -12,6 +12,8 @@
 
 #define PENGUIN_IMG "assets/img/penguin.png"
 #define PI 3.14159265359
+#define MAX_SPEED 20
+#define MINIMUM_SPEED -20
 
 PenguinBody* PenguinBody::player;
 
@@ -44,25 +46,20 @@ void PenguinBody::Start() {
 
 void PenguinBody::Update(double dt) {
     InputManager& input = InputManager::GetInstance();
-    speed = {0, 0};
     angle = associated.angleDeg;
+    bool keyPressed = false;
+
     if (input.IsKeyDown(W_KEY)) {
-        if (speed.x < 100 && speed.y < 100) {
-            angle = Helpers::ConvertToRadians(angle);
-            speed.x += dt * cos(angle);
-            speed.y += dt * sin(angle);
+        if (linearSpeed < MAX_SPEED) {
+            linearSpeed += dt*10;
         }
-        associated.box.x += speed.x;
-        associated.box.y += speed.y;    
+        keyPressed = true;
     }
     if (input.IsKeyDown(S_KEY)) {
-        if (speed.x > -100 && speed.y > -100) {
-            angle = Helpers::ConvertToRadians(angle);
-            speed.x -= dt*100 * cos(angle);
-            speed.y -= dt*100 * sin(angle);
+        if (linearSpeed > MINIMUM_SPEED) {
+            linearSpeed -= dt*10;
         }
-        associated.box.x += speed.x;
-        associated.box.y += speed.y;
+        keyPressed = true;
     }
     if (input.IsKeyDown(A_KEY)) {
         angle = angle - dt*100;
@@ -72,9 +69,21 @@ void PenguinBody::Update(double dt) {
         angle = angle + dt*100;
         associated.angleDeg = angle;
     }
+    if (!keyPressed) {
+        if (linearSpeed > 0)
+            linearSpeed -= dt*5;
+        else if (linearSpeed < 0) {
+            linearSpeed += dt*5;
+        }
+    }
     if (hp <= 0) {
         associated.RequestDelete();
     }
+    
+    speed = {linearSpeed, 0};
+    speed.Rotate(Helpers::ConvertToRadians(angle));
+    associated.box.x += speed.x;
+    associated.box.y += speed.y; 
 }
 
 void PenguinBody::Render() {}
