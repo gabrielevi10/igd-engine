@@ -17,6 +17,7 @@ class Alien : public Component {
         void Update(double dt);
         void Render();
         bool Is(const std::string& type) const;
+        void NotifyCollision(GameObject& other);
     
     private:
         class Action {

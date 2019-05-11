@@ -14,6 +14,7 @@ class PenguinCannon : public Component {
         void Render();
         bool Is(const std::string& type) const;
         void Start();
+        void NotifyCollision(GameObject& other);
 
         void Shoot();
     

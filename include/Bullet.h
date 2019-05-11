@@ -13,7 +13,8 @@ class Bullet : public Component {
         bool Is(const std::string& type) const;
         void Start();
         int GetDamage() const;
-    
+        void NotifyCollision(GameObject& other);
+
     private:
         Vec2 speed;
         double distanceLeft;

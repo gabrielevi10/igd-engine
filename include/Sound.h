@@ -21,6 +21,7 @@ class Sound : public Component {
         void Render();
         bool Is(const std::string&) const;
         void Start();
+        void NotifyCollision(GameObject& other);
         
     private:
         Mix_Chunk* chunk;

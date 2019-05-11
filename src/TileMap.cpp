@@ -77,3 +77,5 @@ bool TileMap::Is(const std::string& type) const {
 }
 
 void TileMap::Start() {}
+
+void TileMap::NotifyCollision(GameObject& other) {}

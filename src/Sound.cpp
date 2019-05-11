@@ -41,3 +41,5 @@ bool Sound::Is(const std::string& type) const {
 }
 
 void Sound::Start() {}
+
+void Sound::NotifyCollision(GameObject& other) {}

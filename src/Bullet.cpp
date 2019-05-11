@@ -1,5 +1,6 @@
 #include "Bullet.h"
 #include "Sprite.h"
+#include "Collider.h"
 
 #include <iostream>
 
@@ -12,6 +13,9 @@ Bullet::Bullet(GameObject& associated, double angle, double speed, int damage, d
     std::shared_ptr<Sprite> s(new Sprite(associated, file, 4));
     // s->SetScale(3, 3);
     associated.AddComponent(s);
+
+    std::shared_ptr<Collider> collider(new Collider(associated));
+    associated.AddComponent(collider);
 }
 
 void Bullet::Update(double dt) {
@@ -33,4 +37,11 @@ void Bullet::Start() {}
 
 int Bullet::GetDamage() const {
     return damage;
+}
+
+void Bullet::NotifyCollision(GameObject& other) {
+    std::shared_ptr<Component> aux;
+    if ((aux = other.GetComponent("Alien")) != nullptr) {
+        associated.RequestDelete();
+    }
 }

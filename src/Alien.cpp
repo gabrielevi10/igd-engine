@@ -8,6 +8,8 @@
 #include "Game.h"
 #include "Minion.h"
 #include "Helpers.h"
+#include "Bullet.h"
+#include "Collider.h"
 
 #include <iostream>
 
@@ -25,6 +27,9 @@ Alien::Alien(GameObject& associated, int nMinions) :
     associated.AddComponent(sprite);
     associated.box.x = sprite->GetWidth()/2;
     associated.box.y = sprite->GetHeight()/2;
+
+    std::shared_ptr<Collider> collider(new Collider(associated));
+    associated.AddComponent(collider);
 }
 
 Alien::~Alien() {
@@ -101,6 +106,14 @@ void Alien::Start() {
         minionArray.push_back(state->AddObject(go));
     }
 
+}
+
+void Alien::NotifyCollision(GameObject& other) {
+    std::shared_ptr<Component> aux;
+    if ((aux = other.GetComponent("Bullet")) != nullptr) {
+        hp -= std::dynamic_pointer_cast<Bullet>(aux)->GetDamage();
+        std::cout << "Colidi com uma bullet" << std::endl;
+    }
 }
 
 Alien::Action::Action(ActionType type, double x, double y) : 

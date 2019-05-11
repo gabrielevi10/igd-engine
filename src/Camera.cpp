@@ -20,7 +20,7 @@ void Camera::Update(double dt) {
     InputManager& input = InputManager::GetInstance();
     
     if (focus != nullptr) {
-        pos = {0, 0}; 
+        pos = Vec2(512, 300) - focus->box.Center();
     }
     else {
         if (input.IsKeyDown(UP_ARROW_KEY)) {

@@ -14,6 +14,7 @@ class Component {
         virtual void Render() = 0;
         virtual bool Is(const std::string&) const = 0;
         virtual void Start() = 0;
+        virtual void NotifyCollision(GameObject& other) = 0;
     
     protected:
         GameObject& associated;

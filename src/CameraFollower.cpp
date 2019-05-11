@@ -15,3 +15,5 @@ bool CameraFollower::Is(const std::string& type) const {
 }
 
 void CameraFollower::Start() {}
+
+void CameraFollower::NotifyCollision(GameObject& other) {}

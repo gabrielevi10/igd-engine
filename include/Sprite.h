@@ -32,6 +32,7 @@ class Sprite : public Component {
         void Render(double x, double y);
         bool Is(const std::string&) const;
         void Start();
+        void NotifyCollision(GameObject& other);
 
     private:
         SDL_Texture* texture;

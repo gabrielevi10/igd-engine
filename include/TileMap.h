@@ -21,6 +21,7 @@ class TileMap : public Component {
         void Update(double dt);
         bool Is(const std::string& type) const;
         void Start();
+        void NotifyCollision(GameObject& other);
 
     private:
         std::vector<int> tileMatrix;

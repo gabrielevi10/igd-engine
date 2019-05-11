@@ -7,6 +7,7 @@
 #include "InputManager.h"
 #define SDL_ICLUDE
 #include "SDL_include.h"
+#include "Collider.h"
 
 #include <iostream>
 
@@ -26,7 +27,12 @@ PenguinBody::PenguinBody(GameObject& associated) :
     
     std::shared_ptr<Sprite> bodySprite(new Sprite(associated, PENGUIN_IMG));
     associated.AddComponent(bodySprite);
+    associated.box.x = bodySprite->GetWidth()/2;
+    associated.box.y = bodySprite->GetHeight()/2;
     player = this;
+
+    std::shared_ptr<Collider> collider(new Collider(associated));
+    associated.AddComponent(collider);
 }
 
 PenguinBody::~PenguinBody() {
@@ -79,7 +85,7 @@ void PenguinBody::Update(double dt) {
     if (hp <= 0) {
         associated.RequestDelete();
     }
-    
+
     speed = {linearSpeed, 0};
     speed.Rotate(Helpers::ConvertToRadians(angle));
     associated.box.x += speed.x;
@@ -91,3 +97,5 @@ void PenguinBody::Render() {}
 bool PenguinBody::Is(const std::string& type) const {
     return (type == "PenguinBody");
 }
+
+void PenguinBody::NotifyCollision(GameObject& other) {}

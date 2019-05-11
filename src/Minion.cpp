@@ -5,6 +5,7 @@
 #include "State.h"
 #include "Game.h"
 #include "Helpers.h"
+#include "Collider.h"
 
 #define BULLET_IMG "assets/img/minionbullet2.png"
 #define MINION_IMG "assets/img/minion.png"
@@ -22,6 +23,9 @@ Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, do
     std::shared_ptr<Sprite> sprite(new Sprite(associated, MINION_IMG));
     sprite->SetScale(drandom, drandom);
     associated.AddComponent(sprite);          
+
+    std::shared_ptr<Collider> collider(new Collider(associated));
+    associated.AddComponent(collider);
 }
 
 void Minion::Update(double dt) {
@@ -70,3 +74,5 @@ void Minion::Shoot(Vec2 target) {
     go->angleDeg = Helpers::ConvertToDegree(angle);
     state->AddObject(go);
 }
+
+void Minion::NotifyCollision(GameObject& other) {}

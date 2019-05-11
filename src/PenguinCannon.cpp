@@ -7,6 +7,7 @@
 #include "Bullet.h"
 #include "Camera.h"
 #include "Helpers.h"
+#include "Collider.h"
 
 #define GUN_IMG "assets/img/cubngun.png"
 #define BULLET_IMG "assets/img/penguinbullet.png"
@@ -19,6 +20,9 @@ PenguinCannon::PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> p
 
     std::shared_ptr<Sprite> cannonSprite(new Sprite(associated, GUN_IMG));
     associated.AddComponent(cannonSprite);
+
+    std::shared_ptr<Collider> collider(new Collider(associated));
+    associated.AddComponent(collider);
 }
 
 void PenguinCannon::Update(double dt) {
@@ -74,3 +78,5 @@ void PenguinCannon::Shoot() {
 }
 
 void PenguinCannon::Start() {}
+
+void PenguinCannon::NotifyCollision(GameObject& other) {}
