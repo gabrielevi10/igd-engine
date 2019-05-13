@@ -9,6 +9,7 @@
 #include "InputManager.h"
 #include "Camera.h"
 #include "CameraFollower.h"
+#include "Game.h"
 #include "Alien.h"
 #include "Collider.h"
 #include "PenguinBody.h"
@@ -19,6 +20,7 @@
 #define debug(x) std::cout << x << std::endl;
 
 State::State() : quitRequested(false), started(false) {
+    Game& game = Game::GetInstance();
     LoadAssets();
    
     GameObject* go = new GameObject();
@@ -34,6 +36,7 @@ State::State() : quitRequested(false), started(false) {
     AddObject(go1);
 
     Camera::Follow(go1);
+    // Camera::pos = {0, 0};
     Camera::speed = {0, 0};
 }
 

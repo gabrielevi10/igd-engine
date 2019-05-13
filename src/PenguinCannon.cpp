@@ -9,6 +9,8 @@
 #include "Helpers.h"
 #include "Collider.h"
 
+#include <iostream>
+
 #define GUN_IMG "assets/img/cubngun.png"
 #define BULLET_IMG "assets/img/penguinbullet.png"
 #define PI 3.14159265359
@@ -33,8 +35,8 @@ void PenguinCannon::Update(double dt) {
 
     if (pbody != nullptr) {
         pbodyCenter = pbody->box.Center();
-        associated.box.x = pbodyCenter.x - pbody->box.w/2;
-        associated.box.y = pbodyCenter.y - pbody->box.h/2;
+
+        associated.box.Centralize(pbodyCenter);
 
         center = associated.box.Center();
 

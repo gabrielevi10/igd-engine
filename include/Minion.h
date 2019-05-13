@@ -22,6 +22,7 @@ class Minion : public Component {
     private:
         std::weak_ptr<GameObject> alienCenter;
         double arc;
+        int hp;
 };
 
 #endif

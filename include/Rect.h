@@ -16,7 +16,7 @@ class Rect {
 
         Vec2 Center() const;
         bool Contains(const Vec2&) const;
-
+        void Centralize(const Vec2& point);
 
         double x, y, w, h;
 };

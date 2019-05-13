@@ -6,31 +6,36 @@
 #include "Game.h"
 #include "Helpers.h"
 #include "Collider.h"
+#include <chrono>
 
 #define BULLET_IMG "assets/img/minionbullet2.png"
 #define MINION_IMG "assets/img/minion.png"
 #define PI 3.14159265359
+#define MINION_DST 200
+
 
 Minion::Minion(GameObject& associated, std::weak_ptr<GameObject> alienCenter, double arcOffsetDeg) :
     Component(associated),
     alienCenter(alienCenter),
-    arc(arcOffsetDeg) {
+    arc(arcOffsetDeg),
+    hp(30) {
     
+    srand(clock());
     int random = rand() % 5;
-    random += 11;
+    random += 10;
     double drandom = (double)random/10.0;
-
+    
     std::shared_ptr<Sprite> sprite(new Sprite(associated, MINION_IMG));
     sprite->SetScale(drandom, drandom);
-    associated.AddComponent(sprite);          
+    associated.AddComponent(sprite);
 
-    std::shared_ptr<Collider> collider(new Collider(associated));
+    std::shared_ptr<Collider> collider(new Collider(associated, {drandom, drandom}));
     associated.AddComponent(collider);
 }
 
 void Minion::Update(double dt) {
     Vec2 center, pos;
-    Vec2 dst = {200, 0};
+    Vec2 dst = {MINION_DST, 0};
     arc = arc + dt * PI/4.0;
     associated.angleDeg = Helpers::ConvertToDegree(arc);
 
@@ -39,10 +44,9 @@ void Minion::Update(double dt) {
     if (alien != nullptr) {
         center = alien->box.Center();
         pos = dst + center;
-        associated.box.x = pos.x - associated.box.w/2;
-        associated.box.y = pos.y - associated.box.h/2;
+        associated.box.Centralize(pos);
     }
-    else {
+    if (hp <= 0 || alien == nullptr) {
         associated.RequestDelete();
     }
 }
@@ -75,4 +79,9 @@ void Minion::Shoot(Vec2 target) {
     state->AddObject(go);
 }
 
-void Minion::NotifyCollision(GameObject& other) {}
+void Minion::NotifyCollision(GameObject& other) {
+    std::shared_ptr<Component> aux;
+    if ((aux = other.GetComponent("Bullet")) != nullptr) {
+        hp -= std::dynamic_pointer_cast<Bullet>(aux)->GetDamage();
+    }
+}

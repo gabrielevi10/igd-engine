@@ -70,18 +70,25 @@ void Sprite::Render(double x, double y) {
 }
 
 int Sprite::GetWidth() const {
-    return (width * (int)scale.x) / frameCount;
+    return (width * scale.x) / frameCount;
 }
 
 int Sprite::GetHeight() const {
-    return height * (int)scale.y;
+    return height * scale.y;
 }
 
 void Sprite::SetScale(double scaleX, double scaleY) {
+    Vec2 center = associated.box.Center();
     if (scaleX > 0) 
         scale.x = scaleX;
     if (scaleY > 0) 
         scale.y = scaleY;
+    width = GetWidth();
+    height = GetHeight();
+    associated.box.w = width;
+    associated.box.h = height;
+    
+    associated.box.Centralize(center);
 }
 
 Vec2 Sprite::GetScale() const {

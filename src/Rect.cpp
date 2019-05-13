@@ -36,3 +36,8 @@ Vec2 Rect::Center() const {
 bool Rect::Contains(const Vec2& point) const {
     return(point.x <= (x + w) && point.y <= (y + h) && (point.x >= x && point.y >= y));
 }
+
+void Rect::Centralize(const Vec2& point) {
+    x = point.x - w/2;
+    y = point.y - h/2;
+}

@@ -27,8 +27,8 @@ PenguinBody::PenguinBody(GameObject& associated) :
     
     std::shared_ptr<Sprite> bodySprite(new Sprite(associated, PENGUIN_IMG));
     associated.AddComponent(bodySprite);
-    associated.box.x = bodySprite->GetWidth()/2;
-    associated.box.y = bodySprite->GetHeight()/2;
+    // associated.box.x = bodySprite->GetWidth()/2;
+    // associated.box.y = bodySprite->GetHeight()/2;
     player = this;
 
     std::shared_ptr<Collider> collider(new Collider(associated));
@@ -76,8 +76,9 @@ void PenguinBody::Update(double dt) {
         associated.angleDeg = angle;
     }
     if (!keyPressed) {
-        if (linearSpeed > 0)
+        if (linearSpeed > 0) {
             linearSpeed -= dt*5;
+        }
         else if (linearSpeed < 0) {
             linearSpeed += dt*5;
         }

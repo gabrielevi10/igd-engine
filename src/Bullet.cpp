@@ -44,4 +44,7 @@ void Bullet::NotifyCollision(GameObject& other) {
     if ((aux = other.GetComponent("Alien")) != nullptr) {
         associated.RequestDelete();
     }
+    else if ((aux = other.GetComponent("Minion")) != nullptr) {
+        associated.RequestDelete();
+    }
 }

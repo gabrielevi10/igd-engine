@@ -1,5 +1,7 @@
 #include "Collider.h"
 #include "Helpers.h"
+
+#include <iostream>
 #ifdef DEBUG
 #include "Camera.h"
 #include "Game.h"
@@ -14,41 +16,42 @@ Collider::Collider(GameObject& associated, Vec2 scale, Vec2 offset) :
     offset(offset) {}
 
 void Collider::Update(double dt) {
-    box.x = associated.box.Center().x + associated.box.w/2;
-    box.y = associated.box.Center().y + associated.box.h/2;
-    box.w = associated.box.w * scale.x;
-    box.h = associated.box.h * scale.y;
+    Vec2 center = associated.box.Center();
+    box = associated.box;
+    box.w *= scale.x;
+    box.h *= scale.y;
+    box.Centralize(center);
 
-    Vec2 aux(box.x + offset.x, box.y + offset.y);
-    aux.Rotate(Helpers::ConvertToRadians(associated.angleDeg)); 
-    box.x = aux.x;
-    box.y = aux.y;
+    offset.Rotate(Helpers::ConvertToRadians(associated.angleDeg));
+    box.x += offset.x;
+    box.y += offset.y;
 }
 
 void Collider::Render() {
 #ifdef DEBUG
-	Vec2 center( box.Center() );
+	Vec2 center = box.Center();
 	SDL_Point points[5];
+    double angleRad = Helpers::ConvertToRadians(associated.angleDeg);
 
     Vec2 aux = Vec2(box.x, box.y) - center;
-    aux.Rotate(associated.angleDeg/(180/PI));
-	Vec2 point = aux + center - Camera::pos;
+    aux.Rotate(angleRad);
+	Vec2 point = aux + center + Camera::pos;
 	points[0] = {(int)point.x, (int)point.y};
 	points[4] = {(int)point.x, (int)point.y};
     
     aux = Vec2(box.x + box.w, box.y) - center;
-    aux.Rotate(associated.angleDeg/(180/PI));
-	point = aux + center - Camera::pos;
+    aux.Rotate(angleRad);
+	point = aux + center + Camera::pos;
 	points[1] = {(int)point.x, (int)point.y};
     
     aux = Vec2(box.x + box.w, box.y + box.h) - center;
-    aux.Rotate(associated.angleDeg/(180/PI));
-	point = aux + center - Camera::pos;
+    aux.Rotate(angleRad);
+	point = aux + center + Camera::pos;
 	points[2] = {(int)point.x, (int)point.y};
 	
     aux = Vec2(box.x, box.y + box.h) - center;
-    aux.Rotate(associated.angleDeg/(180/PI));
-	point = aux + center - Camera::pos;
+    aux.Rotate(angleRad);
+	point = aux + center + Camera::pos;
 	points[3] = {(int)point.x, (int)point.y};
 
 	SDL_SetRenderDrawColor(Game::GetInstance().GetRenderer(), 255, 0, 0, SDL_ALPHA_OPAQUE);

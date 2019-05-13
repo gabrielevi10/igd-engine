@@ -43,6 +43,10 @@ void Alien::Update(double dt) {
     int random, index;
     std::shared_ptr<Minion> minion;
 
+    if (hp <= 0) {
+        associated.RequestDelete();
+        return;
+    }
     associated.angleDeg += -1;
     if (input.MousePress(LEFT_MOUSE_BUTTON)) {
         // taskQueue.push(Action(Action::ActionType::SHOOT, input.GetMouseX() - Camera::pos.x, input.GetMouseY() - Camera::pos.y));
@@ -53,7 +57,6 @@ void Alien::Update(double dt) {
 
     if (!taskQueue.empty()) {
         Action action = taskQueue.front();
-
         if (action.type == Action::ActionType::MOVE) {
             center = associated.box.Center();
             angle = Helpers::AngleBetweenTwoPoints(Vec2(center.x, center.y), Vec2(action.pos.x, action.pos.y));
