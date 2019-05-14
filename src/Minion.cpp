@@ -80,7 +80,7 @@ void Minion::Shoot(Vec2 target) {
 
     double angle = Helpers::AngleBetweenTwoPoints(Vec2(center.x, center.y), Vec2(target.x, target.y));
     
-    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, 5000, BULLET_IMG, true, 3));
+    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 300, 10, 5000, BULLET_IMG, true, 3));
 
     go->box.x = center.x - go->box.w/2;
     go->box.y = center.y - go->box.h/2;

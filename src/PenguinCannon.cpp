@@ -73,7 +73,7 @@ void PenguinCannon::Shoot() {
     GameObject* go = new GameObject();
     Vec2 center = associated.box.Center();
 
-    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, 5000, BULLET_IMG, false, 4));
+    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 300, 10, 5000, BULLET_IMG, false, 4));
 
     go->box.Centralize(center);
     // go->box.x += associated.box.w/2;

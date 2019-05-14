@@ -18,8 +18,8 @@
 #define DEATH_IMG "assets/img/penguindeath.png"
 #define DEATH_SOUND "assets/audio/boom.wav"
 #define PI 3.14159265359
-#define MAX_SPEED 20
-#define MINIMUM_SPEED -20
+#define MAX_SPEED 15
+#define MINIMUM_SPEED -15
 #define ANIM_DUR 2.0
 
 PenguinBody* PenguinBody::player;

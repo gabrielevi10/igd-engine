@@ -83,6 +83,9 @@ void Alien::Update(double dt) {
 
             for (int i = 0; i < nMinions; i++) {
                 std::shared_ptr<GameObject> minionGo = minionArray[i].lock();
+                if (minionGo == nullptr) {
+                    continue;
+                }
                 double aux = Helpers::EuclideanDistance(Vec2(destination.x, destination.y), 
                                                         Vec2(minionGo->box.x, minionGo->box.y));   
                 if (distance > aux) {

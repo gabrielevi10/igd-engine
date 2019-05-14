@@ -124,7 +124,7 @@ void State::Render() {
         objectArray[i]->Render();
     }
     if (tilemap != nullptr) {
-        tilemap->RenderLayer(1);
+        tilemap->RenderLayer(1, Camera::pos.x, Camera::pos.y);
     }
 }
 
