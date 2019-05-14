@@ -69,22 +69,20 @@ void PenguinCannon::Shoot() {
         return;
     }
     timer.Restart();
-    State* state = &Game::GetInstance().GetState();
+    State& state = Game::GetInstance().GetState();
     GameObject* go = new GameObject();
     Vec2 center = associated.box.Center();
 
     std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 300, 10, 5000, BULLET_IMG, false, 4));
-
-    go->box.Centralize(center);
-    // go->box.x += associated.box.w/2;
-    // Vec2 aux(go->box.x, go->box.y);
-    // aux.Rotate(Helpers::ConvertToRadians(associated.angleDeg));
-    // go->box.x = aux.x;
-    // go->box.y = aux.y;
-
+    go->angleDeg = associated.angleDeg;
     go->AddComponent(bullet);
-    go->angleDeg = Helpers::ConvertToDegree(angle);
-    state->AddObject(go);
+    
+    Vec2 aux(associated.box.w/2, 0);
+    aux.Rotate(angle);
+    aux = associated.box.Center() + aux;
+    go->box.Centralize(aux);
+    
+    state.AddObject(go);
 }
 
 void PenguinCannon::Start() {}

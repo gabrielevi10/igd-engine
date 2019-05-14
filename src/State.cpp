@@ -16,6 +16,10 @@
 #include "Collision.h"
 #include "Helpers.h"
 
+#define OCEAN_IMG "assets/img/ocean.jpg"
+#define TILESET "assets/img/tileset.png"
+#define TILEMAP "assets/map/tileMap.txt"
+#define BCK_MSIC "assets/audio/stageState.ogg"
 #define PI 3.14159265359
 #define debug(x) std::cout << x << std::endl;
 
@@ -55,17 +59,17 @@ void State::LoadAssets() {
     GameObject* go = new GameObject();
     GameObject* go1 = new GameObject();
 
-    go->AddComponent(std::shared_ptr<Component>(new Sprite(*go, "assets/img/ocean.jpg")));
+    go->AddComponent(std::shared_ptr<Component>(new Sprite(*go, OCEAN_IMG)));
     go->AddComponent(std::shared_ptr<Component>(new CameraFollower(*go)));
     go->box.x = 0;
     go->box.y = 0;
     objectArray.emplace_back(go);
     
-    music = std::unique_ptr<Music>(new Music("assets/audio/stageState.ogg")); 
+    music = std::unique_ptr<Music>(new Music(BCK_MSIC)); 
     music->Play();
     
-    std::shared_ptr<TileSet> tileSet(new TileSet(64, 64, "assets/img/tileset.png"));
-    std::shared_ptr<Component> tileMap(new TileMap(*go1, "assets/map/tileMap.txt", tileSet));
+    std::shared_ptr<TileSet> tileSet(new TileSet(64, 64, TILESET));
+    std::shared_ptr<Component> tileMap(new TileMap(*go1, TILEMAP, tileSet));
     go1->AddComponent(tileMap);
     go1->box.x = 0;
     go1->box.y = 0;
