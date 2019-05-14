@@ -145,6 +145,7 @@ std::weak_ptr<GameObject> State::GetObjectPtr(GameObject* go) const {
 
 std::weak_ptr<GameObject> State::AddObject(GameObject* go) {
     std::shared_ptr<GameObject> shrptr(go);
+
     std::weak_ptr<GameObject> weakptr = shrptr;
     
     objectArray.push_back(shrptr);

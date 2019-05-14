@@ -7,11 +7,13 @@
 #define INCLUDE_SDL_IMAGE
 #include "SDL_include.h"
 #include "Component.h"
+#include "Timer.h"
 
 class Sprite : public Component {
     public:
         Sprite(GameObject& associated);
-        Sprite(GameObject& associated, const std::string& file, int frameCount = 1, double frameTime = 1);
+        Sprite(GameObject& associated, const std::string& file, int frameCount = 1, 
+                double frameTime = 1, double secondsToSelfDestruct= 0);
         ~Sprite();
 
         void Open(const std::string& file);
@@ -37,9 +39,11 @@ class Sprite : public Component {
     private:
         SDL_Texture* texture;
         int width, height, frameCount, currentFrame;
-        double angle, timeElapsed, frameTime;
+        double angle, timeElapsed, frameTime, secondsToSelfDestruct;
         SDL_Rect clipRect;
         Vec2 scale;
+        Timer selfDestructCount;
+
 };
 
 #endif

@@ -12,8 +12,7 @@ Bullet::Bullet(GameObject& associated, double angle, double speed, int damage,
     damage(damage),
     targetsPlayer(targetsPlayer) {
     
-    std::shared_ptr<Sprite> s(new Sprite(associated, file, frames));
-    // s->SetScale(3, 3);
+    std::shared_ptr<Sprite> s(new Sprite(associated, file, frames, 1.0/frames));
     associated.AddComponent(s);
 
     std::shared_ptr<Collider> collider(new Collider(associated));

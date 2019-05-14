@@ -8,12 +8,16 @@
 #include "Game.h"
 #include "Minion.h"
 #include "Helpers.h"
+#include "Sound.h"
 #include "Bullet.h"
 #include "Collider.h"
 
 #include <iostream>
 
-#define ALIEN_IMG "assets/img/alien.png"
+#define ALIEN_IMG   "assets/img/alien.png"
+#define DEATH_IMG   "assets/img/aliendeath.png"
+#define DEATH_SOUND "assets/audio/boom.wav"
+#define ANIM_DUR    2.0
 #define PI 3.14159265359
 
 Alien::Alien(GameObject& associated, int nMinions) : 
@@ -43,10 +47,6 @@ void Alien::Update(double dt) {
     int random, index;
     std::shared_ptr<Minion> minion;
 
-    if (hp <= 0) {
-        associated.RequestDelete();
-        return;
-    }
     associated.angleDeg += -1;
     if (input.MousePress(LEFT_MOUSE_BUTTON)) {
         // taskQueue.push(Action(Action::ActionType::SHOOT, input.GetMouseX() - Camera::pos.x, input.GetMouseY() - Camera::pos.y));
@@ -91,6 +91,24 @@ void Alien::Update(double dt) {
         }
 
     }
+    if (hp <= 0) {
+        associated.RequestDelete();
+        State& state = Game::GetInstance().GetState();
+        GameObject* go = new GameObject();
+
+        std::shared_ptr<Sprite> deathSprite(new Sprite(*go, DEATH_IMG, 4, 
+                                            ANIM_DUR/4, ANIM_DUR));
+
+        std::shared_ptr<Sound> deathSound(new Sound(*go, DEATH_SOUND));
+        go->AddComponent(deathSprite);
+        go->AddComponent(deathSound);
+        go->box.Centralize(associated.box.Center());
+
+        deathSound->Play();
+        
+        state.AddObject(go);
+    }
+
 }
 
 void Alien::Render() {}
@@ -115,7 +133,6 @@ void Alien::NotifyCollision(GameObject& other) {
     std::shared_ptr<Component> aux;
     if ((aux = other.GetComponent("Bullet")) != nullptr) {
         hp -= std::dynamic_pointer_cast<Bullet>(aux)->GetDamage();
-        std::cout << "Colidi com uma bullet" << std::endl;
     }
 }
 

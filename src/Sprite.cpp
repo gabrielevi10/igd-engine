@@ -12,7 +12,8 @@ Sprite::Sprite(GameObject& associated) :
     scale({1, 1}),
     angle(associated.angleDeg) {}
 
-Sprite::Sprite(GameObject& associated, const std::string& file, int frameCount, double frameTime) : 
+Sprite::Sprite(GameObject& associated, const std::string& file, int frameCount, 
+                double frameTime, double secondsToSelfDestruct) : 
     Component(associated), 
     texture(nullptr),
     frameCount(frameCount),
@@ -20,7 +21,9 @@ Sprite::Sprite(GameObject& associated, const std::string& file, int frameCount, 
     frameTime(frameTime),
     scale({1, 1}),
     timeElapsed(0),
-    angle(associated.angleDeg) {
+    angle(associated.angleDeg),
+    secondsToSelfDestruct(secondsToSelfDestruct),
+    selfDestructCount() {
     
     Open(file);
 }
@@ -108,13 +111,19 @@ bool Sprite::IsOpen() const {
 
 void Sprite::Update(const double dt) {
     int w, x = 0;
-    timeElapsed += dt*100;
+    timeElapsed += dt;
     if (timeElapsed > frameTime) {
         timeElapsed = 0;
         currentFrame = (currentFrame + 1) % frameCount;
         w = width / frameCount;
         x = currentFrame * w;
         SetClip(x, 0, w, height);
+    }
+    if (secondsToSelfDestruct > 0) {
+        selfDestructCount.Update(dt);
+        if (selfDestructCount.Get() > secondsToSelfDestruct) {
+            associated.RequestDelete();
+        }
     }
 }
 

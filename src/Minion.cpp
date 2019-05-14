@@ -10,6 +10,8 @@
 
 #define BULLET_IMG "assets/img/minionbullet2.png"
 #define MINION_IMG "assets/img/minion.png"
+#define DEATH_IMG "assets/img/miniondeath.png"
+#define ANIM_DUR 2.0
 #define PI 3.14159265359
 #define MINION_DST 200
 
@@ -48,6 +50,16 @@ void Minion::Update(double dt) {
     }
     if (hp <= 0 || alien == nullptr) {
         associated.RequestDelete();
+        State& state = Game::GetInstance().GetState();
+        GameObject* go = new GameObject();
+
+        std::shared_ptr<Sprite> deathSprite(new Sprite(*go, DEATH_IMG, 4, 
+                                            ANIM_DUR/4, ANIM_DUR));
+
+        go->AddComponent(deathSprite);
+        go->box.Centralize(associated.box.Center());
+        
+        state.AddObject(go);
     }
 }
 

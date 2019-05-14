@@ -8,14 +8,19 @@
 #define SDL_ICLUDE
 #include "SDL_include.h"
 #include "Collider.h"
+#include "Camera.h"
 #include "Bullet.h"
+#include "Sound.h"
 
 #include <iostream>
 
 #define PENGUIN_IMG "assets/img/penguin.png"
+#define DEATH_IMG "assets/img/penguindeath.png"
+#define DEATH_SOUND "assets/audio/boom.wav"
 #define PI 3.14159265359
 #define MAX_SPEED 20
 #define MINIMUM_SPEED -20
+#define ANIM_DUR 2.0
 
 PenguinBody* PenguinBody::player;
 
@@ -84,6 +89,19 @@ void PenguinBody::Update(double dt) {
         }
     }
     if (hp <= 0) {
+        Camera::Unfollow();
+        GameObject* go = new GameObject();
+
+        std::shared_ptr<Sprite> deathSprite(new Sprite(*go, DEATH_IMG, 5, 
+                                            ANIM_DUR/5, ANIM_DUR));
+
+        std::shared_ptr<Sound> deathSound(new Sound(*go, DEATH_SOUND));
+        go->AddComponent(deathSprite);
+        go->AddComponent(deathSound);
+        go->box.Centralize(associated.box.Center());
+        deathSound->Play();
+
+        Game::GetInstance().GetState().AddObject(go);
         associated.RequestDelete();
     }
 
@@ -101,10 +119,14 @@ bool PenguinBody::Is(const std::string& type) const {
 
 void PenguinBody::NotifyCollision(GameObject& other) {
     std::shared_ptr<Component> aux;
+    
     if ((aux = other.GetComponent("Bullet")) != nullptr) {
         std::shared_ptr<Bullet> bullet = std::dynamic_pointer_cast<Bullet>(aux);
+        
         if (bullet->TargetsPlayer()) {
-            associated.RequestDelete();
+            hp -= bullet->GetDamage();
         }
+    
     }
+
 }
