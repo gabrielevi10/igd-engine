@@ -6,7 +6,9 @@
 
 class Bullet : public Component {
     public:
-        Bullet(GameObject& associated, double angle, double speed, int damage, double maxDistance, const std::string& file);
+        Bullet(GameObject& associated, double angle, double speed, 
+                int damage, double maxDistance, const std::string& 
+                file, bool targetsPlayer, int frames);
 
         void Update(double dt);
         void Render();
@@ -14,11 +16,13 @@ class Bullet : public Component {
         void Start();
         int GetDamage() const;
         void NotifyCollision(GameObject& other);
+        bool TargetsPlayer() const;
 
     private:
         Vec2 speed;
         double distanceLeft;
         int damage;
+        bool targetsPlayer;
 };
 
 #endif

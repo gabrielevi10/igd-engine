@@ -4,13 +4,15 @@
 
 #include <iostream>
 
-Bullet::Bullet(GameObject& associated, double angle, double speed, int damage, double maxDistance, const std::string& file) :
+Bullet::Bullet(GameObject& associated, double angle, double speed, int damage, 
+                double maxDistance, const std::string& file, bool targetsPlayer, int frames) :
     Component(associated),
     speed({speed*cos(angle), speed*sin(angle)}),
     distanceLeft(maxDistance),
-    damage(damage) {
+    damage(damage),
+    targetsPlayer(targetsPlayer) {
     
-    std::shared_ptr<Sprite> s(new Sprite(associated, file, 4));
+    std::shared_ptr<Sprite> s(new Sprite(associated, file, frames));
     // s->SetScale(3, 3);
     associated.AddComponent(s);
 
@@ -39,12 +41,18 @@ int Bullet::GetDamage() const {
     return damage;
 }
 
+bool Bullet::TargetsPlayer() const {
+    return targetsPlayer;
+}
+
 void Bullet::NotifyCollision(GameObject& other) {
-    std::shared_ptr<Component> aux;
-    if ((aux = other.GetComponent("Alien")) != nullptr) {
+    if (other.GetComponent("Alien") != nullptr && !targetsPlayer) {
         associated.RequestDelete();
     }
-    else if ((aux = other.GetComponent("Minion")) != nullptr) {
+    else if (other.GetComponent("Minion") != nullptr && !targetsPlayer) {
+        associated.RequestDelete();
+    }
+    else if (other.GetComponent("Penguin") != nullptr && targetsPlayer) {
         associated.RequestDelete();
     }
 }

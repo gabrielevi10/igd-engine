@@ -14,6 +14,7 @@
 #define GUN_IMG "assets/img/cubngun.png"
 #define BULLET_IMG "assets/img/penguinbullet.png"
 #define PI 3.14159265359
+#define SHOOT_COOLDOWN 1
 
 PenguinCannon::PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> penguinBody) : 
     Component(associated),
@@ -28,6 +29,7 @@ PenguinCannon::PenguinCannon(GameObject& associated, std::weak_ptr<GameObject> p
 }
 
 void PenguinCannon::Update(double dt) {
+    timer.Update(dt);
     std::shared_ptr<GameObject> pbody = penguinBody.lock();
     InputManager& input = InputManager::GetInstance();
     Vec2 center, pbodyCenter;
@@ -63,14 +65,22 @@ bool PenguinCannon::Is(const std::string& type) const {
 }
 
 void PenguinCannon::Shoot() {
+    if (timer.Get() < SHOOT_COOLDOWN) {
+        return;
+    }
+    timer.Restart();
     State* state = &Game::GetInstance().GetState();
     GameObject* go = new GameObject();
     Vec2 center = associated.box.Center();
 
-    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, 5000, BULLET_IMG));
+    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, 5000, BULLET_IMG, false, 4));
 
     go->box.Centralize(center);
-    go->box.x = associated.box.x;
+    // go->box.x += associated.box.w/2;
+    // Vec2 aux(go->box.x, go->box.y);
+    // aux.Rotate(Helpers::ConvertToRadians(associated.angleDeg));
+    // go->box.x = aux.x;
+    // go->box.y = aux.y;
 
     go->AddComponent(bullet);
     go->angleDeg = Helpers::ConvertToDegree(angle);

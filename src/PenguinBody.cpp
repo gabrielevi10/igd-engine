@@ -8,6 +8,7 @@
 #define SDL_ICLUDE
 #include "SDL_include.h"
 #include "Collider.h"
+#include "Bullet.h"
 
 #include <iostream>
 
@@ -98,4 +99,12 @@ bool PenguinBody::Is(const std::string& type) const {
     return (type == "PenguinBody");
 }
 
-void PenguinBody::NotifyCollision(GameObject& other) {}
+void PenguinBody::NotifyCollision(GameObject& other) {
+    std::shared_ptr<Component> aux;
+    if ((aux = other.GetComponent("Bullet")) != nullptr) {
+        std::shared_ptr<Bullet> bullet = std::dynamic_pointer_cast<Bullet>(aux);
+        if (bullet->TargetsPlayer()) {
+            associated.RequestDelete();
+        }
+    }
+}

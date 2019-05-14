@@ -69,7 +69,7 @@ void Minion::Shoot(Vec2 target) {
     double dst = Helpers::EuclideanDistance(Vec2(center.x, center.y), Vec2(target.x, target.y));
     double angle = Helpers::AngleBetweenTwoPoints(Vec2(center.x, center.y), Vec2(target.x, target.y));
     
-    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, dst*2, BULLET_IMG));
+    std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, dst*2, BULLET_IMG, true, 3));
 
     go->box.x = center.x - go->box.w/2;
     go->box.y = center.y - go->box.h/2;
@@ -82,6 +82,9 @@ void Minion::Shoot(Vec2 target) {
 void Minion::NotifyCollision(GameObject& other) {
     std::shared_ptr<Component> aux;
     if ((aux = other.GetComponent("Bullet")) != nullptr) {
-        hp -= std::dynamic_pointer_cast<Bullet>(aux)->GetDamage();
+        std::shared_ptr<Bullet> bullet = std::dynamic_pointer_cast<Bullet>(aux);
+        if (!bullet->TargetsPlayer()) {
+            hp -= std::dynamic_pointer_cast<Bullet>(aux)->GetDamage();
+        }
     }
 }
