@@ -33,7 +33,7 @@ State::State() : quitRequested(false), started(false) {
     go1->AddComponent(std::shared_ptr<PenguinBody>(new PenguinBody(*go1)));
     go1->box.x = 704;
     go1->box.y = 640;
-    AddObject(go1);
+    player = AddObject(go1);
 
     Camera::Follow(go1);
     // Camera::pos = {0, 0};
@@ -155,4 +155,9 @@ std::weak_ptr<GameObject> State::AddObject(GameObject* go) {
     }
 
     return weakptr;
+}
+
+Vec2 State::GetPlayerPosition() const {
+    std::shared_ptr<GameObject> aux = player.lock();
+    return Vec2(aux->box.x, aux->box.y);
 }

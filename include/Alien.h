@@ -5,6 +5,8 @@
 #include <vector>
 #include <memory>
 
+#include "Timer.h"
+#include "Vec2.h"
 #include "Component.h"
 #include "GameObject.h"
 
@@ -18,20 +20,15 @@ class Alien : public Component {
         void Render();
         bool Is(const std::string& type) const;
         void NotifyCollision(GameObject& other);
-    
+
+        static int alienCount;
+
     private:
-        class Action {
-            public:
-                typedef enum ActionType {MOVE, SHOOT} ActionType;
-                Action(ActionType type, double x, double y);
-
-                ActionType type;
-                Vec2 pos;
-        };
-
-        Vec2 speed;
+        enum AlienState {MOVING, RESTING};
+        AlienState state;
+        Timer restTimer;
+        Vec2 speed, destination;
         int hp, nMinions;
-        std::queue<Action> taskQueue;
         std::vector<std::weak_ptr<GameObject>> minionArray;
 };  
 

@@ -19,6 +19,7 @@ class State {
         void Start();
         std::weak_ptr<GameObject> AddObject(GameObject* go);
         std::weak_ptr<GameObject> GetObjectPtr(GameObject* go) const;
+        Vec2 GetPlayerPosition() const;
 
     private:
         void Input();
@@ -26,6 +27,7 @@ class State {
         std::unique_ptr<Music> music;
         bool quitRequested, started;
         std::vector<std::shared_ptr<GameObject>> objectArray;
+        std::weak_ptr<GameObject> player;
 };
 
 #endif
