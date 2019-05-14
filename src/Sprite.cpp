@@ -83,10 +83,9 @@ void Sprite::SetScale(double scaleX, double scaleY) {
         scale.x = scaleX;
     if (scaleY > 0) 
         scale.y = scaleY;
-    width = GetWidth();
-    height = GetHeight();
-    associated.box.w = width;
-    associated.box.h = height;
+
+    associated.box.w = GetWidth();
+    associated.box.h = GetHeight();
     
     associated.box.Centralize(center);
 }

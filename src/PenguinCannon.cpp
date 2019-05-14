@@ -62,8 +62,6 @@ bool PenguinCannon::Is(const std::string& type) const {
     return (type == "PenguinCannon");
 }
 
-#include <iostream>
-
 void PenguinCannon::Shoot() {
     State* state = &Game::GetInstance().GetState();
     GameObject* go = new GameObject();
@@ -71,8 +69,8 @@ void PenguinCannon::Shoot() {
 
     std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 100, 10, 5000, BULLET_IMG));
 
-    go->box.x = center.x - go->box.w/2;
-    go->box.y = center.y - go->box.h/2;
+    go->box.Centralize(center);
+    go->box.x = associated.box.x;
 
     go->AddComponent(bullet);
     go->angleDeg = Helpers::ConvertToDegree(angle);

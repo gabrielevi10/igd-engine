@@ -27,8 +27,7 @@ PenguinBody::PenguinBody(GameObject& associated) :
     
     std::shared_ptr<Sprite> bodySprite(new Sprite(associated, PENGUIN_IMG));
     associated.AddComponent(bodySprite);
-    // associated.box.x = bodySprite->GetWidth()/2;
-    // associated.box.y = bodySprite->GetHeight()/2;
+
     player = this;
 
     std::shared_ptr<Collider> collider(new Collider(associated));
