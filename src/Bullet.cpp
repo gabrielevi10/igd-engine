@@ -51,7 +51,7 @@ void Bullet::NotifyCollision(GameObject& other) {
     else if (other.GetComponent("Minion") != nullptr && !targetsPlayer) {
         associated.RequestDelete();
     }
-    else if (other.GetComponent("Penguin") != nullptr && targetsPlayer) {
+    else if (other.GetComponent("PenguinBody") != nullptr && targetsPlayer) {
         associated.RequestDelete();
     }
 }
