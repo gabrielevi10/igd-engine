@@ -19,7 +19,6 @@ class State {
         void Start();
         std::weak_ptr<GameObject> AddObject(GameObject* go);
         std::weak_ptr<GameObject> GetObjectPtr(GameObject* go) const;
-        Vec2 GetPlayerPosition() const;
 
     private:
         void Input();

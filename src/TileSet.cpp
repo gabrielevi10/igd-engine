@@ -2,14 +2,18 @@
 
 #include <iostream>
 
-TileSet::TileSet(const int tileWidth, const int tileHeight, const std::string& file) : tileSet(tileSetGo, file), tileWidth(tileWidth), tileHeight(tileHeight) {
+TileSet::TileSet(uint32_t tileWidth, uint32_t tileHeight, const std::string& file) : 
+    tileSet(tileSetGo, file), 
+    tileWidth(tileWidth), 
+    tileHeight(tileHeight) {
+    
     rows = tileSet.GetHeight()/tileHeight;
     columns = tileSet.GetWidth()/tileWidth;
 }
 
 void TileSet::RenderTile(uint32_t index, double x, double y) {
     int cx, cy;
-    if (index >= 0 && index < columns*rows - 1) {
+    if (index < columns*rows - 1) {
         cx = index % columns;
         cy = index / columns;
         tileSet.SetClip(cx * tileWidth, cy * tileHeight, tileWidth, tileHeight);
@@ -17,10 +21,10 @@ void TileSet::RenderTile(uint32_t index, double x, double y) {
     }
 }
 
-int TileSet::GetTileWidth() const {
+uint32_t TileSet::GetTileWidth() const {
     return tileWidth;
 }
 
-int TileSet::GetTileHeight() const {
+uint32_t TileSet::GetTileHeight() const {
     return tileHeight;
 }

@@ -6,11 +6,13 @@
 #include "Game.h"
 #include "Helpers.h"
 #include "Collider.h"
+#include "Sound.h"
 #include <chrono>
 
 #define BULLET_IMG "assets/img/minionbullet2.png"
 #define MINION_IMG "assets/img/minion.png"
 #define DEATH_IMG "assets/img/miniondeath.png"
+#define DEATH_SOUND "assets/audio/boom.wav"
 #define ANIM_DUR 2.0
 #define PI 3.14159265359
 #define MINION_DST 200
@@ -56,9 +58,14 @@ void Minion::Update(double dt) {
         std::shared_ptr<Sprite> deathSprite(new Sprite(*go, DEATH_IMG, 4, 
                                             ANIM_DUR/4, ANIM_DUR));
 
+        std::shared_ptr<Sound> deathSound(new Sound(*go, DEATH_SOUND));
+
         go->AddComponent(deathSprite);
+        go->AddComponent(deathSound);
         go->box.Centralize(associated.box.Center());
         
+        deathSound->Play();
+
         state.AddObject(go);
     }
 }

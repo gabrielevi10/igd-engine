@@ -18,7 +18,7 @@ class PenguinCannon : public Component {
         void NotifyCollision(GameObject& other);
 
         void Shoot();
-    
+        
     private:
         std::weak_ptr<GameObject> penguinBody;
         double angle;

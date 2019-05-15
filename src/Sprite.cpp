@@ -9,8 +9,8 @@
 Sprite::Sprite(GameObject& associated) : 
     Component(associated), 
     texture(nullptr),
-    scale({1, 1}),
-    angle(associated.angleDeg) {}
+    angle(associated.angleDeg),
+    scale({1, 1}) {}
 
 Sprite::Sprite(GameObject& associated, const std::string& file, int frameCount, 
                 double frameTime, double secondsToSelfDestruct) : 
@@ -18,12 +18,11 @@ Sprite::Sprite(GameObject& associated, const std::string& file, int frameCount,
     texture(nullptr),
     frameCount(frameCount),
     currentFrame(0),
-    frameTime(frameTime),
-    scale({1, 1}),
-    timeElapsed(0),
     angle(associated.angleDeg),
+    timeElapsed(0),
+    frameTime(frameTime),
     secondsToSelfDestruct(secondsToSelfDestruct),
-    selfDestructCount() {
+    scale({1, 1}) {
     
     Open(file);
 }

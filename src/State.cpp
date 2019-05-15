@@ -24,7 +24,6 @@
 #define debug(x) std::cout << x << std::endl;
 
 State::State() : quitRequested(false), started(false) {
-    Game& game = Game::GetInstance();
     LoadAssets();
    
     GameObject* go = new GameObject();
@@ -104,7 +103,7 @@ void State::Update(double dt) {
             colliders.push_back(collider);
             indexes.push_back(i);
             k = 0;
-            for (int j : indexes) {
+            for (uint32_t j : indexes) {
                 double a1 = Helpers::ConvertToRadians(objectArray[j]->angleDeg);
                 double a2 = Helpers::ConvertToRadians(objectArray[i]->angleDeg);
 
@@ -159,9 +158,4 @@ std::weak_ptr<GameObject> State::AddObject(GameObject* go) {
     }
 
     return weakptr;
-}
-
-Vec2 State::GetPlayerPosition() const {
-    std::shared_ptr<GameObject> aux = player.lock();
-    return Vec2(aux->box.x, aux->box.y);
 }

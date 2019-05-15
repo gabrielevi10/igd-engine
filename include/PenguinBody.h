@@ -14,6 +14,7 @@ class PenguinBody : public Component {
         void Render();
         bool Is(const std::string& type) const;
         void NotifyCollision(GameObject& other);
+        Vec2 GetPlayerPosition() const;
 
         static PenguinBody* player;
 

@@ -7,16 +7,16 @@
 
 class TileSet {
     public:
-        TileSet(const int tileWidth, const int tileHeight, const std::string&);
+        TileSet(uint32_t tileWidth, uint32_t tileHeight, const std::string&);
 
         void RenderTile(uint32_t index, double x, double y);
-        int GetTileWidth() const;
-        int GetTileHeight() const;
+        uint32_t GetTileWidth() const;
+        uint32_t GetTileHeight() const;
     
     private:
         GameObject tileSetGo;
         Sprite tileSet;
-        int rows, columns, tileWidth, tileHeight;
+        uint32_t rows, columns, tileWidth, tileHeight;
 };
 
 #endif

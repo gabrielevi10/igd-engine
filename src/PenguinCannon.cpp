@@ -71,8 +71,7 @@ void PenguinCannon::Shoot() {
     timer.Restart();
     State& state = Game::GetInstance().GetState();
     GameObject* go = new GameObject();
-    Vec2 center = associated.box.Center();
-
+   
     std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 300, 10, 5000, BULLET_IMG, false, 4));
     go->angleDeg = associated.angleDeg;
     go->AddComponent(bullet);

@@ -2,9 +2,9 @@
 #include "GameObject.h"
 
 GameObject::GameObject() : 
+    angleDeg(0),
     isDead(false), 
-    started(false),
-    angleDeg(0) {}
+    started(false) {}
 
 GameObject::~GameObject() {
     components.clear();

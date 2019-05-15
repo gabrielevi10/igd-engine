@@ -47,20 +47,21 @@ Alien::~Alien() {
 }
 
 void Alien::Update(double dt) {
-    InputManager& input = InputManager::GetInstance();
     Vec2 center;
     double angle, distance = 99999.9;
-    int random, index;
+    int index;
     std::shared_ptr<Minion> minion;
-    State& gameState = Game::GetInstance().GetState();
     associated.angleDeg += -1;
 
-    if (PenguinBody::player == nullptr) {}
-    else if (state == RESTING) {
+    if (PenguinBody::player == nullptr) {
+        return;
+    }
+    PenguinBody* player = PenguinBody::player;
+    if (state == RESTING) {
         restTimer.Update(dt);
         if (restTimer.Get() > RST_CWDN) {
             state = MOVING;
-            destination = gameState.GetPlayerPosition();
+            destination = player->GetPlayerPosition();
         }
     }
     else if (state == MOVING) {
@@ -79,7 +80,7 @@ void Alien::Update(double dt) {
             associated.box.x = destination.x - associated.box.w/2;
             associated.box.y = destination.y - associated.box.h/2;
 
-            destination = gameState.GetPlayerPosition();
+            destination = player->GetPlayerPosition();
 
             for (int i = 0; i < nMinions; i++) {
                 std::shared_ptr<GameObject> minionGo = minionArray[i].lock();

@@ -130,3 +130,7 @@ void PenguinBody::NotifyCollision(GameObject& other) {
     }
 
 }
+
+Vec2 PenguinBody::GetPlayerPosition() const {
+    return Vec2(associated.box.x, associated.box.y);
+}
