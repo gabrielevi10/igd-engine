@@ -58,13 +58,15 @@ void Minion::Update(double dt) {
         std::shared_ptr<Sprite> deathSprite(new Sprite(*go, DEATH_IMG, 4, 
                                             ANIM_DUR/4, ANIM_DUR));
 
-        std::shared_ptr<Sound> deathSound(new Sound(*go, DEATH_SOUND));
 
         go->AddComponent(deathSprite);
-        go->AddComponent(deathSound);
         go->box.Centralize(associated.box.Center());
         
-        deathSound->Play();
+        if (alien != nullptr) {
+            std::shared_ptr<Sound> deathSound(new Sound(*go, DEATH_SOUND));
+            deathSound->Play();
+            go->AddComponent(deathSound);
+        }
 
         state.AddObject(go);
     }
