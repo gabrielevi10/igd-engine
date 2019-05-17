@@ -36,7 +36,7 @@ State::State() : quitRequested(false), started(false) {
     go1->AddComponent(std::shared_ptr<PenguinBody>(new PenguinBody(*go1)));
     go1->box.x = 704;
     go1->box.y = 640;
-    player = AddObject(go1);
+    AddObject(go1);
 
     Camera::Follow(go1);
     // Camera::pos = {0, 0};

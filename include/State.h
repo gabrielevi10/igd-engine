@@ -26,7 +26,6 @@ class State {
         std::unique_ptr<Music> music;
         bool quitRequested, started;
         std::vector<std::shared_ptr<GameObject>> objectArray;
-        std::weak_ptr<GameObject> player;
 };
 
 #endif
