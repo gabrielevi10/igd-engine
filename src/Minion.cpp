@@ -2,7 +2,7 @@
 #include "Minion.h"
 #include "Sprite.h"
 #include "Bullet.h"
-#include "State.h"
+#include "StageState.h"
 #include "Game.h"
 #include "Helpers.h"
 #include "Collider.h"
@@ -52,7 +52,7 @@ void Minion::Update(double dt) {
     }
     if (hp <= 0 || alien == nullptr) {
         associated.RequestDelete();
-        State& state = Game::GetInstance().GetState();
+        State& state = Game::GetInstance().GetCurrentState();
         GameObject* go = new GameObject();
 
         std::shared_ptr<Sprite> deathSprite(new Sprite(*go, DEATH_IMG, 4, 
@@ -83,7 +83,7 @@ void Minion::Start() {}
 #include <iostream>
 
 void Minion::Shoot(Vec2 target) {
-    State* state = &Game::GetInstance().GetState();
+    State& state = Game::GetInstance().GetCurrentState();
     GameObject* go = new GameObject();
     Vec2 center = associated.box.Center();
 
@@ -96,7 +96,7 @@ void Minion::Shoot(Vec2 target) {
 
     go->AddComponent(bullet);
     go->angleDeg = Helpers::ConvertToDegree(angle);
-    state->AddObject(go);
+    state.AddObject(go);
 }
 
 void Minion::NotifyCollision(GameObject& other) {

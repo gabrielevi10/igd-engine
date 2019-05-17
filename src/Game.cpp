@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <iostream>
+#include <memory>
 #include <chrono>
 
 #define INCLUDE_SDL_IMAGE
@@ -55,11 +56,16 @@ Game::Game(std::string title, int width, int height) {
         throw std::runtime_error("SDL_CreateRenderer() failed: " + std::string(SDL_GetError()));
     }
 
-    state = new State();
+    storedState = nullptr;
 }
 
 Game::~Game() {
-    delete state;
+    if (storedState != nullptr) {
+        delete storedState;
+    }
+    while (!stateStack.empty()) {
+        stateStack.pop();
+    }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     Mix_CloseAudio();
@@ -75,8 +81,8 @@ Game& Game::GetInstance() {
     return *instance;
 }
 
-State& Game::GetState() const {
-    return *state;
+State& Game::GetCurrentState() const {
+    return *stateStack.top().get();
 }
 
 SDL_Renderer* Game::GetRenderer() const {
@@ -94,16 +100,54 @@ void Game::CalculateDeltaTime() {
 }
 
 void Game::Run() {
-    state->Start();
-    while (!state->QuitRequested()) {
+    if (storedState != nullptr) {
+        stateStack.emplace(storedState);
+        storedState = nullptr;
+    }
+    else {
+        return;
+    }
+
+    stateStack.top()->Start();
+
+    while (!stateStack.top()->QuitRequested() && !stateStack.empty()) {
+        if (stateStack.top()->PopRequested()) {
+            stateStack.pop();
+            
+            if (!stateStack.empty()) {
+                stateStack.top()->Resume();
+            }
+
+        }
+
+        if (storedState != nullptr) {
+            stateStack.top()->Pause();
+            stateStack.emplace(storedState);
+            stateStack.top()->Start();
+            storedState = nullptr;
+        }
+
         CalculateDeltaTime();
         InputManager::GetInstance().Update();
-        state->Update(dt);
-        state->Render();
+
+        if (!stateStack.empty()) {
+            stateStack.top()->Update(dt);
+            stateStack.top()->Render();
+        }
+
         SDL_RenderPresent(renderer);
         SDL_Delay(33);
     }
+
+    while (!stateStack.empty()) {
+        stateStack.pop();
+    }
+
     Resources::ClearImages();
     Resources::ClearSounds();
     Resources::ClearMusics();
+}
+
+void Game::Push(State* state) {
+    storedState = state;   
 }

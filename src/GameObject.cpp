@@ -38,8 +38,9 @@ void GameObject::RequestDelete() {
 }
 
 void GameObject::AddComponent(std::shared_ptr<Component> cpt) {
-    if (cpt != nullptr)
+    if (cpt != nullptr) {
         components.push_back(cpt); 
+    }
 }
 
 void GameObject::RemoveComponent(std::shared_ptr<Component> cpt) {

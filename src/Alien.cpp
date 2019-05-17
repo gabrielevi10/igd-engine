@@ -4,8 +4,9 @@
 #include "InputManager.h"
 #define INCLUDE_SDL
 #include "SDL_include.h"
-#include "State.h"
+#include "StageState.h"
 #include "Game.h"
+#include "State.h"
 #include "Minion.h"
 #include "Helpers.h"
 #include "Sound.h"
@@ -101,7 +102,6 @@ void Alien::Update(double dt) {
     }
     if (hp <= 0) {
         associated.RequestDelete();
-        State& state = Game::GetInstance().GetState();
         GameObject* go = new GameObject();
 
         std::shared_ptr<Sprite> deathSprite(new Sprite(*go, DEATH_IMG, 4, 
@@ -114,7 +114,7 @@ void Alien::Update(double dt) {
 
         deathSound->Play();
         
-        state.AddObject(go);
+        Game::GetInstance().GetCurrentState().AddObject(go);
     }
 
 }
@@ -126,13 +126,13 @@ bool Alien::Is(const std::string& type) const {
 }
 
 void Alien::Start() {
-    State* state = &Game::GetInstance().GetState();
+    State& state = Game::GetInstance().GetCurrentState();
     
     for (int i = 0; i < nMinions; i++) {
         GameObject* go = new GameObject;
-        std::shared_ptr<Minion> minion(new Minion(*go, state->GetObjectPtr(&associated), double(i*2*PI)/nMinions));
+        std::shared_ptr<Minion> minion(new Minion(*go, state.GetObjectPtr(&associated), double(i*2*PI)/nMinions));
         go->AddComponent(minion);
-        minionArray.push_back(state->AddObject(go));
+        minionArray.push_back(state.AddObject(go));
     }
 
 }

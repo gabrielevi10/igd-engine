@@ -2,7 +2,7 @@
 #include "PenguinBody.h"
 #include "Sprite.h"
 #include "Game.h"
-#include "State.h"
+#include "StageState.h"
 #include "InputManager.h"
 #include "Bullet.h"
 #include "Camera.h"
@@ -69,7 +69,7 @@ void PenguinCannon::Shoot() {
         return;
     }
     timer.Restart();
-    State& state = Game::GetInstance().GetState();
+    State& state = Game::GetInstance().GetCurrentState();
     GameObject* go = new GameObject();
    
     std::shared_ptr<Bullet> bullet(new Bullet(*go, angle, 300, 10, 5000, BULLET_IMG, false, 4));

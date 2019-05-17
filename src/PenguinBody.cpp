@@ -2,7 +2,7 @@
 #include "PenguinCannon.h"
 #include "Sprite.h"
 #include "Game.h"
-#include "State.h"
+#include "StageState.h"
 #include "Helpers.h"
 #include "InputManager.h"
 #define SDL_ICLUDE
@@ -46,7 +46,7 @@ PenguinBody::~PenguinBody() {
 
 void PenguinBody::Start() {
     Game& gameInstance = Game::GetInstance();
-    State& stateInstance = gameInstance.GetState();
+    State& stateInstance = gameInstance.GetCurrentState();
     GameObject* go = new GameObject();
 
     std::shared_ptr<PenguinCannon> pcannon(new PenguinCannon(*go, stateInstance.GetObjectPtr(&associated)));
@@ -101,7 +101,7 @@ void PenguinBody::Update(double dt) {
         go->box.Centralize(associated.box.Center());
         deathSound->Play();
 
-        Game::GetInstance().GetState().AddObject(go);
+        Game::GetInstance().GetCurrentState().AddObject(go);
         associated.RequestDelete();
     }
 
