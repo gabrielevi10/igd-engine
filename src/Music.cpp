@@ -14,7 +14,7 @@ Music::~Music() {}
 
 void Music::Play(int times) {
     if (music != nullptr) {
-        if (Mix_PlayMusic(music, times) == -1) {
+        if (Mix_PlayMusic(music.get(), times) == -1) {
             throw std::runtime_error("Music Play() failed: " + std::string(Mix_GetError()));
         }
     }

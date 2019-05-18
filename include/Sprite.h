@@ -2,6 +2,7 @@
 #define SPRITE_HPP
 
 #include <string>
+#include <memory>
 
 #define INCLUDE_SDL
 #define INCLUDE_SDL_IMAGE
@@ -37,7 +38,7 @@ class Sprite : public Component {
         void NotifyCollision(GameObject& other);
 
     private:
-        SDL_Texture* texture;
+        std::shared_ptr<SDL_Texture> texture;
         int width, height, frameCount, currentFrame;
         double angle, timeElapsed, frameTime, secondsToSelfDestruct;
         SDL_Rect clipRect;

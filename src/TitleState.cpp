@@ -6,17 +6,19 @@
 #include "Game.h"
 #include "InputManager.h"
 #include "Camera.h"
+#include "Text.h"
 #define INCLUDE_SDL
 #include "SDL_include.h"
 #include <iostream>
 
 #define TITLE_IMG "assets/img/title.jpg"
+#define FONT "assets/font/Call me maybe.ttf"
 
 TitleState::TitleState() {
     GameObject* go = new GameObject();
     go->AddComponent(std::shared_ptr<Sprite>(new Sprite(*go, TITLE_IMG)));
-    go->box.x = -Camera::pos.x;
-    go->box.y = -Camera::pos.y;
+    Text* text = new Text(*go, FONT, 50, Text::SOLID, "Press space to play", {0, 0, 0, 0});
+    go->AddComponent(std::shared_ptr<Text>(text));
     AddObject(go);
 }
 

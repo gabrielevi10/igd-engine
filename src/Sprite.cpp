@@ -34,7 +34,7 @@ void Sprite::Open(const std::string& file) {
 
     texture = Resources::GetImage(file);
 
-    code = SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+    code = SDL_QueryTexture(texture.get(), nullptr, nullptr, &width, &height);
     if (code != 0) {
         throw std::runtime_error("Sprite SDL_QueryTexture failed: " + std::string(SDL_GetError()));
     }
@@ -65,7 +65,7 @@ void Sprite::Render(double x, double y) {
 
     angle = associated.angleDeg;
 
-    returned_code = SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clipRect, &dstrect, angle, nullptr, SDL_FLIP_NONE);
+    returned_code = SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture.get(), &clipRect, &dstrect, angle, nullptr, SDL_FLIP_NONE);
     if (returned_code != 0) {
         throw std::runtime_error("Sprite Render() failed: " + std::string(SDL_GetError()));
     }

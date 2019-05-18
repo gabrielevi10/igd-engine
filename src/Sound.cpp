@@ -13,7 +13,7 @@ Sound::Sound(GameObject& associatetd, const std::string& file) : Component(assoc
 Sound::~Sound() {}
 
 void Sound::Play(int times) {
-    channel = Mix_PlayChannel(-1, chunk, times - 1);
+    channel = Mix_PlayChannel(-1, chunk.get(), times - 1);
     if (channel == -1) {
         throw std::runtime_error("Sound Play() failed: " + std::string(Mix_GetError()));
     }

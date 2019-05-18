@@ -5,6 +5,7 @@
 
 #define INCLUDE_SDL_IMAGE
 #define INCLUDE_SDL_MIXER
+#define INCLUDE_SDL_TTF
 #include "SDL_include.h"
 
 #include "Game.h"
@@ -56,6 +57,11 @@ Game::Game(std::string title, int width, int height) {
         throw std::runtime_error("SDL_CreateRenderer() failed: " + std::string(SDL_GetError()));
     }
 
+    returned_code = TTF_Init();
+    if (returned_code != 0) {
+        throw std::runtime_error("TTF_Init() failed: " + std::string(TTF_GetError()));
+    }
+
     storedState = nullptr;
 }
 
@@ -66,6 +72,7 @@ Game::~Game() {
     while (!stateStack.empty()) {
         stateStack.pop();
     }
+    TTF_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     Mix_CloseAudio();
@@ -113,6 +120,10 @@ void Game::Run() {
     while (!stateStack.top()->QuitRequested() && !stateStack.empty()) {
         if (stateStack.top()->PopRequested()) {
             stateStack.pop();
+
+            Resources::ClearImages();
+            Resources::ClearSounds();
+            Resources::ClearMusics();
             
             if (!stateStack.empty()) {
                 stateStack.top()->Resume();

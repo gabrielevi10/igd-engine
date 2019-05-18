@@ -1,8 +1,9 @@
 #ifndef SOUND_HPP
 #define SOUND_HPP
 
-#include "Component.h"
+#include <memory>
 
+#include "Component.h"
 #define INCLUDE_SDL_MIXER
 #include "SDL_include.h"
 
@@ -24,7 +25,7 @@ class Sound : public Component {
         void NotifyCollision(GameObject& other);
         
     private:
-        Mix_Chunk* chunk;
+        std::shared_ptr<Mix_Chunk> chunk;
         int channel;
 };
 
