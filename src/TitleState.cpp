@@ -14,12 +14,17 @@
 #define TITLE_IMG "assets/img/title.jpg"
 #define FONT "assets/font/Call me maybe.ttf"
 
-TitleState::TitleState() {
+TitleState::TitleState() : flag(true) {
     GameObject* go = new GameObject();
+    GameObject* go1 = new GameObject();
+   
     go->AddComponent(std::shared_ptr<Sprite>(new Sprite(*go, TITLE_IMG)));
-    Text* text = new Text(*go, FONT, 50, Text::SOLID, "Press space to play", {0, 0, 0, 0});
-    go->AddComponent(std::shared_ptr<Text>(text));
     AddObject(go);
+    
+    Text* text = new Text(*go1, FONT, 50, Text::SOLID, "Press space to play", {0, 0, 0, 0});
+    go1->box.Centralize({512, 500});
+    go1->AddComponent(std::shared_ptr<Text>(text));
+    AddObject(go1);
 }
 
 TitleState::~TitleState() {}
@@ -28,6 +33,11 @@ void TitleState::LoadAssets() {}
 
 void TitleState::Update(double dt) {
     InputManager& input = InputManager::GetInstance();
+    timer.Update(dt);
+    if (timer.Get() > 1) {
+        flag = 1 - flag;
+        timer.Restart();
+    } 
 
     if (input.KeyPress(ESCAPE_KEY) || input.QuitRequested()) {
         quitRequested = true;
@@ -39,7 +49,18 @@ void TitleState::Update(double dt) {
 }
 
 void TitleState::Render() {
-    RenderArray();
+    std::shared_ptr<Text> text = nullptr;
+    for (uint32_t i = 0; i < objectArray.size(); i++) {
+        text = std::dynamic_pointer_cast<Text>(objectArray[i]->GetComponent("Text"));
+        if (text == nullptr) {
+            objectArray[i]->Render();
+        }
+        else {
+            if (flag) {
+                text->Render();
+            }
+        }
+    }
 }
 
 void TitleState::Start() {

@@ -11,6 +11,7 @@
 #include "Camera.h"
 #include "Bullet.h"
 #include "Sound.h"
+#include "GameData.h"
 
 #include <iostream>
 
@@ -29,7 +30,7 @@ PenguinBody::PenguinBody(GameObject& associated) :
     speed({0, 0}),
     linearSpeed(0),
     angle(0),
-    hp(50) {
+    hp(500) {
     
     std::shared_ptr<Sprite> bodySprite(new Sprite(associated, PENGUIN_IMG));
     associated.AddComponent(bodySprite);
@@ -107,8 +108,18 @@ void PenguinBody::Update(double dt) {
 
     speed = {linearSpeed, 0};
     speed.Rotate(Helpers::ConvertToRadians(angle));
+    Vec2 oldpos(associated.box.x, associated.box.y);
     associated.box.x += speed.x;
     associated.box.y += speed.y; 
+    if ((associated.box.x + associated.box.w > 1408 ||
+        associated.box.y + associated.box.h > 1280) ||
+        (associated.box.x + 0 < 0 || 
+        associated.box.y + 0 < 0)) {
+
+        associated.box.x = oldpos.x;
+        associated.box.y = oldpos.y;
+        linearSpeed = 0;
+    }
 }
 
 void PenguinBody::Render() {}

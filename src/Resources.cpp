@@ -25,9 +25,12 @@ std::shared_ptr<SDL_Texture> Resources::GetImage(const std::string& file) {
 }
 
 void Resources::ClearImages() {
-    for (auto img_it = imageTable.begin(); img_it != imageTable.end(); img_it++) {
+    for (auto img_it = imageTable.begin(); img_it != imageTable.end();) {
         if (img_it->second.unique()) {
-            imageTable.erase(img_it);
+            img_it = imageTable.erase(img_it);
+        }
+        else {
+            img_it++;
         }
     }
 }
@@ -50,9 +53,12 @@ std::shared_ptr<Mix_Music> Resources::GetMusic(const std::string& file) {
 }
 
 void Resources::ClearMusics() {
-    for (auto music_it = musicTable.begin(); music_it != musicTable.end(); music_it++) {
+    for (auto music_it = musicTable.begin(); music_it != musicTable.end();) {
         if (music_it->second.unique()) {
-            musicTable.erase(music_it);
+            music_it = musicTable.erase(music_it);
+        } 
+        else {
+            music_it++;
         }
     }
 }
@@ -75,9 +81,12 @@ std::shared_ptr<Mix_Chunk> Resources::GetSound(const std::string& file) {
 }
 
 void Resources::ClearSounds() {
-    for (auto sound_it = soundTable.begin(); sound_it != soundTable.end(); sound_it++) {
+    for (auto sound_it = soundTable.begin(); sound_it != soundTable.end();) {
         if (sound_it->second.unique()) {
-            soundTable.erase(sound_it);
+            sound_it = soundTable.erase(sound_it);
+        }
+        else {
+            sound_it++;
         }
     } 
 }
@@ -100,9 +109,12 @@ std::shared_ptr<TTF_Font> Resources::GetFont(const std::string& file, int size) 
 }
 
 void Resources::ClearFonts() {
-    for (auto font_it = fontTable.begin(); font_it != fontTable.end(); font_it++) {
+    for (auto font_it = fontTable.begin(); font_it != fontTable.end();) {
         if (font_it->second.unique()) {
-            fontTable.erase(font_it);
+            font_it = fontTable.erase(font_it);
+        }
+        else {
+            font_it++;
         }
     } 
 }

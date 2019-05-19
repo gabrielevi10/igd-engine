@@ -1,14 +1,15 @@
-#ifndef TILESTATE_H
-#define TILESTATE_H
+#ifndef ENDSTATE_H
+#define  ENDSTATE_H
 
 #include "State.h"
+#include "Music.h"
 #include "Timer.h"
 
-class TitleState : public State {
+class EndState : public State {
     public:
-        TitleState();
-        ~TitleState();
-        
+        EndState();
+        ~EndState();
+
         void LoadAssets();
         void Update(double dt);
         void Render();
@@ -16,8 +17,9 @@ class TitleState : public State {
         void Start();
         void Pause();
         void Resume();
-    
+
     private:
+        Music backgroundMusic;
         Timer timer;
         bool flag;
 };

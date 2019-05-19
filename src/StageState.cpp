@@ -15,22 +15,30 @@
 #include "PenguinBody.h"
 #include "Collision.h"
 #include "Helpers.h"
+#include "GameData.h"
+#include "EndState.h"
 
 #define OCEAN_IMG "assets/img/ocean.jpg"
 #define TILESET "assets/img/tileset.png"
 #define TILEMAP "assets/map/tileMap.txt"
 #define BCK_MSIC "assets/audio/stageState.ogg"
 #define PI 3.14159265359
+#define NUM_ALIENS 3
 #define debug(x) std::cout << x << std::endl;
 
 StageState::StageState() : State() {
     LoadAssets();
    
-    GameObject* go = new GameObject();
-    go->AddComponent(std::shared_ptr<Alien>(new Alien(*go, 5)));
-    go->box.x = 512 - go->box.x;
-    go->box.y = 300 - go->box.y;
-    AddObject(go);
+    for (int i = 0; i < NUM_ALIENS; i++) {
+        GameObject* go = new GameObject();
+        go->AddComponent(std::shared_ptr<Alien>(new Alien(*go, 5)));
+        srand(clock());
+        int randX = rand() % 1408;
+        int randY = rand() % 1280;
+        go->box.x = randX - go->box.x;
+        go->box.y = randY - go->box.y;
+        AddObject(go);
+    }
     
     GameObject* go1 = new GameObject();
     go1->AddComponent(std::shared_ptr<PenguinBody>(new PenguinBody(*go1)));
@@ -43,7 +51,6 @@ StageState::StageState() : State() {
 }
 
 StageState::~StageState() {
-    backgroundMusic.Stop(0);
     objectArray.clear();
 }
 
@@ -90,6 +97,18 @@ void StageState::Update(double dt) {
     if (input.QuitRequested()) {
         quitRequested = true;
     }
+    if (PenguinBody::player == nullptr) {
+        GameData::playerVictory = false;
+        popRequested = true;
+        Game::GetInstance().Push(new EndState());
+        return;
+    }
+    else if (Alien::alienCount == 0) {
+        GameData::playerVictory = true;
+        popRequested = true;
+        Game::GetInstance().Push(new EndState());
+        return;
+    }
 
     Camera::Update(dt);
     
@@ -118,6 +137,7 @@ void StageState::Update(double dt) {
             }
         }
     }
+
     colliders.clear();
     indexes.clear();
 }

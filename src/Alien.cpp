@@ -59,7 +59,9 @@ void Alien::Update(double dt) {
     }
     PenguinBody* player = PenguinBody::player;
     if (state == RESTING) {
-        restTimer.Update(dt);
+        if ((rand() and 1) && (rand() and 1)) {
+            restTimer.Update(dt);
+        }
         if (restTimer.Get() > RST_CWDN) {
             state = MOVING;
             destination = player->GetPlayerPosition();
@@ -81,14 +83,14 @@ void Alien::Update(double dt) {
             associated.box.x = destination.x - associated.box.w/2;
             associated.box.y = destination.y - associated.box.h/2;
 
-            destination = player->GetPlayerPosition();
+            Vec2 playerpos = player->GetPlayerPosition();
 
             for (int i = 0; i < nMinions; i++) {
                 std::shared_ptr<GameObject> minionGo = minionArray[i].lock();
                 if (minionGo == nullptr) {
                     continue;
                 }
-                double aux = Helpers::EuclideanDistance(Vec2(destination.x, destination.y), 
+                double aux = Helpers::EuclideanDistance(Vec2(playerpos.x, playerpos.y), 
                                                         Vec2(minionGo->box.x, minionGo->box.y));   
                 if (distance > aux) {
                     distance = aux;
@@ -97,7 +99,7 @@ void Alien::Update(double dt) {
             }
             std::shared_ptr<Component> aux = minionArray[index].lock()->GetComponent("Minion");
             minion = std::dynamic_pointer_cast<Minion>(aux);
-            minion->Shoot(destination);
+            minion->Shoot(playerpos);
         }
     }
     if (hp <= 0) {
@@ -129,7 +131,7 @@ void Alien::Start() {
     State& state = Game::GetInstance().GetCurrentState();
     
     for (int i = 0; i < nMinions; i++) {
-        GameObject* go = new GameObject;
+        GameObject* go = new GameObject();
         std::shared_ptr<Minion> minion(new Minion(*go, state.GetObjectPtr(&associated), double(i*2*PI)/nMinions));
         go->AddComponent(minion);
         minionArray.push_back(state.AddObject(go));
