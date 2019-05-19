@@ -12,7 +12,7 @@
 
 class Alien : public Component {
     public:
-        Alien(GameObject& associated, int nMinions);
+        Alien(GameObject& associated, int nMinions, double timeOffset);
         ~Alien();
 
         void Start();
@@ -30,6 +30,7 @@ class Alien : public Component {
         Vec2 speed, destination;
         int hp, nMinions;
         std::vector<std::weak_ptr<GameObject>> minionArray;
+        double timeOffset;
 };  
 
 #endif

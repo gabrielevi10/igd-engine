@@ -30,7 +30,7 @@ PenguinBody::PenguinBody(GameObject& associated) :
     speed({0, 0}),
     linearSpeed(0),
     angle(0),
-    hp(500) {
+    hp(100) {
     
     std::shared_ptr<Sprite> bodySprite(new Sprite(associated, PENGUIN_IMG));
     associated.AddComponent(bodySprite);
@@ -143,5 +143,5 @@ void PenguinBody::NotifyCollision(GameObject& other) {
 }
 
 Vec2 PenguinBody::GetPlayerPosition() const {
-    return Vec2(associated.box.x, associated.box.y);
+    return associated.box.Center();
 }

@@ -31,7 +31,7 @@ StageState::StageState() : State() {
    
     for (int i = 0; i < NUM_ALIENS; i++) {
         GameObject* go = new GameObject();
-        go->AddComponent(std::shared_ptr<Alien>(new Alien(*go, 5)));
+        go->AddComponent(std::shared_ptr<Alien>(new Alien(*go, 5, i)));
         srand(clock());
         int randX = rand() % 1408;
         int randY = rand() % 1280;

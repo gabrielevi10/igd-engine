@@ -25,12 +25,13 @@
 
 int Alien::alienCount = 0;
 
-Alien::Alien(GameObject& associated, int nMinions) : 
+Alien::Alien(GameObject& associated, int nMinions, double timeOffset) : 
     Component(associated),
     state(RESTING),
     speed({0, 0}), 
     hp(50),
-    nMinions(nMinions) {
+    nMinions(nMinions),
+    timeOffset(timeOffset) {
     
     alienCount++;
     std::shared_ptr<Sprite> sprite(new Sprite(associated, ALIEN_IMG));
@@ -59,10 +60,8 @@ void Alien::Update(double dt) {
     }
     PenguinBody* player = PenguinBody::player;
     if (state == RESTING) {
-        if ((rand() and 1) && (rand() and 1)) {
-            restTimer.Update(dt);
-        }
-        if (restTimer.Get() > RST_CWDN) {
+        restTimer.Update(dt);
+        if (restTimer.Get() > RST_CWDN + timeOffset) {
             state = MOVING;
             destination = player->GetPlayerPosition();
         }
