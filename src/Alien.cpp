@@ -100,6 +100,7 @@ void Alien::Update(double dt) {
             std::shared_ptr<Component> aux = minionArray[index].lock()->GetComponent("Minion");
             minion = std::dynamic_pointer_cast<Minion>(aux);
             minion->Shoot(playerpos);
+            state = RESTING;
         }
     }
     if (hp <= 0) {
